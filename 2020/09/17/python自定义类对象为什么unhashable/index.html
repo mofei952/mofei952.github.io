@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>python自定义类对象为什么unhashable? | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="背景当我自定义类时，如果定义了__eq__方法，这个类的对象会变成unhashable。下面是在python3.6中的情况： 123456789101112&gt;&gt;&gt; class Item:...     def __init__(self, name):...         self.name &#x3D; name...     def __eq__(self, other):...">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python自定义类对象为什么unhashable?">
+<meta property="og:url" content="http://example.com/2020/09/17/python%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B1%BB%E5%AF%B9%E8%B1%A1%E4%B8%BA%E4%BB%80%E4%B9%88unhashable/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="背景当我自定义类时，如果定义了__eq__方法，这个类的对象会变成unhashable。下面是在python3.6中的情况： 123456789101112&gt;&gt;&gt; class Item:...     def __init__(self, name):...         self.name &#x3D; name...     def __eq__(self, other):...">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-09-17T13:21:00.000Z">
+<meta property="article:modified_time" content="2020-09-17T14:41:05.561Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="hash">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-python自定义类对象为什么unhashable" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/09/17/python%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B1%BB%E5%AF%B9%E8%B1%A1%E4%B8%BA%E4%BB%80%E4%B9%88unhashable/" class="article-date">
+  <time datetime="2020-09-17T13:21:00.000Z" itemprop="datePublished">2020-09-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/python/">python</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      python自定义类对象为什么unhashable?
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>当我自定义类时，如果定义了__eq__方法，这个类的对象会变成unhashable。下面是在python3.6中的情况：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">Item</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, name</span>):</span></span><br><span class="line"><span class="meta">... </span>        self.name = name</span><br><span class="line"><span class="meta">... </span>    <span class="function"><span class="keyword">def</span> <span class="title">__eq__</span>(<span class="params">self, other</span>):</span></span><br><span class="line"><span class="meta">... </span>        <span class="keyword">if</span> <span class="keyword">not</span> isinstance(other, self.__class__):</span><br><span class="line"><span class="meta">... </span>            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"><span class="meta">... </span>        <span class="keyword">return</span> self.name == other.name</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>&#123;Item(<span class="string">&#x27;a&#x27;</span>): <span class="number">1</span>&#125;</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">&quot;&lt;stdin&gt;&quot;</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">TypeError: unhashable type: <span class="string">&#x27;Item&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="排查"><a href="#排查" class="headerlink" title="排查"></a>排查</h2><p>以下内容引用自python3手册的<a target="_blank" rel="noopener" href="https://docs.python.org/3.1/reference/datamodel.html#object.%5F%5Fhash%5F%5F">object.__hash__部分</a></p>
+<blockquote>
+<p>If a class does not define an __eq__() method it should not define a __hash__() operation either; if it defines __eq__() but not __hash__(), its instances will not be usable as items in hashable collections. If a class defines mutable objects and implements an __eq__() method, it should not implement __hash__(), since the implementation of hashable collections requires that a keys hash value is immutable (if the objects hash value changes, it will be in the wrong hash bucket).</p>
+</blockquote>
+<p>翻译成中文如下：</p>
+<blockquote>
+<p>如果一个类没有定义__eq __（）方法，那么它也不应该定义__hash __（）操作。如果它定义__eq __（）但不定义__hash __（），则其实例将不能用作可哈希集合中的项目。如果一个类定义了可变对象并实现了__eq __（）方法，则不应实现__hash __（），因为可哈希集合的实现要求键的哈希值是不可变的（如果对象的哈希值发生变化，那将是错误的哈希存储桶）</p>
+</blockquote>
+<p>综上，如果定义 <code>__eq__</code>，默认的<code>__hash__</code> 将消失。 </p>
+<p>这是因为相等对象的哈希值一定相等，如果<code>__hash__</code>不消失，则会出现相等对象的哈希值不相等的情况。</p>
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>解决方法很简单，在定义<code>__eq__</code>方法的同时定义<code>__hash__</code>方法即可，如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">Item</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, name</span>):</span></span><br><span class="line"><span class="meta">... </span>        self.name = name</span><br><span class="line"><span class="meta">... </span>    <span class="function"><span class="keyword">def</span> <span class="title">__eq__</span>(<span class="params">self, other</span>):</span></span><br><span class="line"><span class="meta">... </span>        <span class="keyword">if</span> <span class="keyword">not</span> isinstance(other, self.__class__):</span><br><span class="line"><span class="meta">... </span>            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"><span class="meta">... </span>        <span class="keyword">return</span> self.name == other.name</span><br><span class="line"><span class="meta">... </span>    <span class="function"><span class="keyword">def</span> <span class="title">__hash__</span>(<span class="params">self</span>):</span></span><br><span class="line"><span class="meta">... </span>        <span class="keyword">return</span> hash(self.name)</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>&#123;Item(<span class="string">&#x27;a&#x27;</span>): <span class="number">1</span>&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2020/09/17/python%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B1%BB%E5%AF%B9%E8%B1%A1%E4%B8%BA%E4%BB%80%E4%B9%88unhashable/" data-id="ckf6wk34x00007kft7s4c36aw" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hash/" rel="tag">hash</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2020/09/16/python%E8%AF%BB%E5%8F%96%E6%9C%AA%E7%9F%A5%E7%BC%96%E7%A0%81%E6%96%87%E4%BB%B6/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">python读取未知编码文件</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/hash/" rel="tag">hash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%96%E7%A0%81/" rel="tag">编码</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/hash/" style="font-size: 10px;">hash</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/%E7%BC%96%E7%A0%81/" style="font-size: 10px;">编码</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/09/17/python%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B1%BB%E5%AF%B9%E8%B1%A1%E4%B8%BA%E4%BB%80%E4%B9%88unhashable/">python自定义类对象为什么unhashable?</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/16/python%E8%AF%BB%E5%8F%96%E6%9C%AA%E7%9F%A5%E7%BC%96%E7%A0%81%E6%96%87%E4%BB%B6/">python读取未知编码文件</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/16/hello-world/">Hello World</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

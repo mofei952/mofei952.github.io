@@ -55,7 +55,6 @@
 <p>《算法题解》这本图解书用图文并茂的方式诠释了算法，让人更容易理解，看起来也不会枯燥。看书的同时做一下笔记，一来可以通过多次翻看笔记来加深记忆，二来方便以后用到的时候方便查找。</p>
 <h2><span id="第一章-算法介绍">第一章 算法介绍</span></h2><h3><span id="11-引言">1.1 引言</span></h3><p>算法是一组完成任务的指令，任何代码片段都可视为算法。</p>
 <h4><span id="111-性能方面">1.1.1 性能方面</span></h4><p>如果不明白各算法的优缺点，代码实现将毫无用处。</p>
-<p>只有在学习比较不同算法的优缺点后，才能在使用时选择适当的算法，使用不同的算法或数据结构可能会让结果大不相同。</p>
 <h4><span id="112-问题解决技巧">1.1.2 问题解决技巧</span></h4><p>将要学习的问题解决技巧，例如：</p>
 <ul>
 <li>使用图算法编写跟踪用户的AI系统</li>
@@ -64,7 +63,7 @@
 </ul>
 <h3><span id="12-二分查找">1.2 二分查找</span></h3><p>二分查找是一种算法，其输入是一个有序的元素列表。如果要查找的元素包含在列表中，二分查找返回其位置；否则返回null。</p>
 <h4><span id="121-更佳的查找方式">1.2.1 更佳的查找方式</span></h4><p>比如在1-100中猜一个数字，最好的方式是先猜50，如果大了猜25，小了猜75，以此类推，这就是二分查找。</p>
-<p>一般而言，对于包含n个元素的列表，用二分查找最多需要log<sub>2</sub>n步，而简单查找最多需要n步。比如元素有128个，那么使用二分查找最多需要6步，元素有256个的话最多需要7步。</p>
+<p>一般而言，对于包含n个元素的列表，用二分查找最多需要log<sub>2</sub>n步，而简单查找最多需要n步。</p>
 <p>二分查找的python实现：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">binary_search</span>(<span class="params">list, item</span>):</span></span><br><span class="line">    low, high = <span class="number">0</span>, len(list)<span class="number">-1</span></span><br><span class="line">    <span class="keyword">while</span> low &lt;= high:</span><br><span class="line">        mid = (low+high)//<span class="number">2</span></span><br><span class="line">        guess = list[mid]</span><br><span class="line">        <span class="keyword">if</span> item == guess:</span><br><span class="line">            <span class="keyword">return</span> mid</span><br><span class="line">        <span class="keyword">if</span> item &gt; guess:</span><br><span class="line">            low = mid + <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            high = mid - <span class="number">1</span></span><br><span class="line"></span><br><span class="line">my_list = [<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>]</span><br><span class="line">print(binary_search(my_list, <span class="number">3</span>))  <span class="comment"># =&gt; 1</span></span><br><span class="line">print(binary_search(my_list, <span class="number">-1</span>))  <span class="comment"># =&gt; None</span></span><br></pre></td></tr></table></figure>
 
@@ -153,7 +152,7 @@
 <img src="/images/算法图解-递归调用时递归栈的变化.jpg">
 
 <p>每个fact 调用都有自己的x 变量。在一个函数调用中不能访问另一个的x 变量。</p>
-<p>使用栈虽然很方便，但是也要付出代价：存储详尽的信息可能占用大量的内存。每个函数调用都要占用一定的内存，如果栈很高，就意味着计算机存储了大量函数调用的信息。在这种情况下，你有两种选择。</p>
+<p>使用栈虽然很方便，但是也要付出代价：存储详尽的信息可能占用大量的内存。每个函数调用都要占用一定的内存，如果栈很高，就意味着计算机存储了大量函数调用的信息。在这种情况下，你有两种选择：</p>
 <ul>
 <li>重新编写代码，转而使用循环。</li>
 <li>使用尾递归 。这是一个高级递归主题，不在本书的讨论范围内。另外，并非所有的语言都支持尾递归。</li>

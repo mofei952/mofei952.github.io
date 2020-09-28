@@ -1,0 +1,75 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>《算法图解》读书笔记 第二章 选择排序 | 莫非 - 技术博客</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/normalize.css/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/purecss/build/pure-min.min.css"><link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/purecss/build/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script><link rel="icon" mask="" sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><script type="text/javascript" src="//cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script><script type="text/javascript" src="//cdn.jsdelivr.net/gh/codeseven/toastr/build/toastr.min.js"></script><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/codeseven/toastr/build/toastr.min.css"><meta name="generator" content="Hexo 5.1.1"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">《算法图解》读书笔记 第二章 选择排序</h1><a id="logo" href="/.">莫非 - 技术博客</a><p class="description"></p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> Home</i></a><a href="/archives/"><i class="fa fa-archive"> Archive</i></a><a href="/about/"><i class="fa fa-user"> About</i></a><a href="/atom.xml"><i class="fa fa-rss"> RSS</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">《算法图解》读书笔记 第二章 选择排序</h1><div class="post-meta">2020-09-28<span> | </span><span class="category"><a href="/categories/%E7%AE%97%E6%B3%95/">算法</a></span></div><div class="post-content"><!-- toc -->
+
+<ul>
+<li><a href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F">第二章 选择排序</a><ul>
+<li><a href="#%E5%86%85%E5%AD%98%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86">内存的工作原理</a></li>
+<li><a href="#%E6%95%B0%E7%BB%84%E5%92%8C%E9%93%BE%E8%A1%A8">数组和链表</a></li>
+<li><a href="#23-%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F">2.3 选择排序</a></li>
+<li><a href="#24-%E5%B0%8F%E7%BB%93">2.4 小结</a></li>
+</ul>
+</li>
+</ul>
+<!-- tocstop -->
+
+<h2><span id="第二章-选择排序">第二章 选择排序</span></h2><p>选择排序是快速排序的基石。</p>
+<h3><span id="内存的工作原理">内存的工作原理</span></h3><p>计算机内存就像是很多抽屉的集合体，每个抽屉都有地址。fe0ffeeb是一个内存单元的地址。</p>
+<p>需要将数据存储到内存时，你请求计算机提供存储空间，计算机给你一个存储地址。需要存储多项数据时，有两种基本方式——数组和链表。</p>
+<h3><span id="数组和链表">数组和链表</span></h3><p>存储方式：</p>
+<ul>
+<li><p>数组中的元素在内存中是相连的。</p>
+</li>
+<li><p>链表中的元素可存储在内存的任何地方。链表的每个元素都存储了下一个元素的地址，从而使一系列随机的内存地址串在一起。</p>
+</li>
+</ul>
+<p>分配内存：</p>
+<ul>
+<li>使用数组时有时就会遇到这样的情况。假设你要为数组分配10 000个位置，内存中有10 000个位置，但不都靠在一起。在这种情况下，你将无法为该数组分配内存！</li>
+<li>链表相当于说“我们分开来坐”，因此，只要有足够的内存空间，就能为链表分配内存。</li>
+</ul>
+<p>添加元素：</p>
+<ul>
+<li>在数组中添加新元素可能很麻烦。如果没有了空间，就得移到内存的其他地方，因此添加新元素的速度会很慢。</li>
+<li>在链表中添加元素很容易，只需将其放入内存，并将其地址存储到前一个元素中。</li>
+</ul>
+<p>随机读取第n个元素：</p>
+<ul>
+<li><p>需要随机地读取元素时，数组的效率很高，因为可迅速找到数组的任何元素。</p>
+</li>
+<li><p>在链表中，元素并非靠在一起的，你无法迅速计算出第n个元素的内存地址，而必须先访问第一个元素以获取第二个元素的地址，以此类推，直到访问第n个元素元素。</p>
+</li>
+</ul>
+<p>在中间插入元素：</p>
+<ul>
+<li><p>使用链表时，插入元素很简单，只需修改它前面的那个元素指向的地址。</p>
+</li>
+<li><p>而使用数组时，则必须将后面的元素都向后移。</p>
+</li>
+</ul>
+<p>删除元素：</p>
+<ul>
+<li><p>链表删除元素时，只需修改前一个元素指向的地址即可。</p>
+</li>
+<li><p>而使用数组时，删除元素后，必须将后面的元素都向前移。</p>
+</li>
+</ul>
+<p>常见的数组和链表操作的运行时间：</p>
+<img src="/images/算法图解-常见数组和链表操作的运行时间.jpg" width="50%" height="50%">
+
+<h3><span id="23-选择排序">2.3 选择排序</span></h3><p>比如要将乐队按照播放次数排序，可以先找出作品播放次数最多的乐队，将该乐队添加到一个新列表中，再找出播放次数第二多的乐队，继续这样做，将得到一个有序列表，这就是选择排序。</p>
+<p>随着排序的进行，每次需要检查的元素数在逐渐减少，最后一次需要检查的元素都只有一个。平均每次检查的元素数为1/2 × n ，因此运行时间为O(n × 1/2 × n)。但大O表示法省略1/2这样的常数，因此可以写作O(n<sup>2</sup>)。</p>
+<p>先编写一个用于找出数组中最小元素下标的函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">find_smallest_index</span>(<span class="params">arr</span>):</span></span><br><span class="line">    smallest_index = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, len(arr)):</span><br><span class="line">        <span class="keyword">if</span> arr[i] &lt; arr[smallest_index]:</span><br><span class="line">            smallest_index = i</span><br><span class="line">    <span class="keyword">return</span> smallest_index</span><br></pre></td></tr></table></figure>
+
+<p>然后使用这个函数来编写选择排序算法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">selection_sort</span>(<span class="params">arr</span>):</span></span><br><span class="line">    new_arr = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(arr)):</span><br><span class="line">        index = find_smallest_index(arr)</span><br><span class="line">        new_arr.append(arr.pop(index))</span><br><span class="line">    <span class="keyword">return</span> new_arr</span><br></pre></td></tr></table></figure>
+
+<h3><span id="24-小结">2.4 小结</span></h3><ul>
+<li>计算机内存犹如一大堆抽屉。</li>
+<li>需要存储多个元素时，可使用数组或链表。</li>
+<li>数组的元素都在一起。</li>
+<li>链表的元素是分开的，其中每个元素都存储了下一个元素的地址。</li>
+<li>数组的读取速度很快。</li>
+<li>链表的插入和删除速度很快。</li>
+<li>在同一个数组中，所有元素的类型都必须相同（都为int、double等）。</li>
+</ul>
+</div><div class="tags"><a href="/tags/%E7%AE%97%E6%B3%95/"><i class="fa fa-tag"></i>算法</a><a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"><i class="fa fa-tag"></i>读书笔记</a><a href="/tags/%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F/"><i class="fa fa-tag"></i>选择排序</a></div><div class="post-nav"><a class="next" href="/2020/09/25/docker%20logs%E6%97%A0%E6%B3%95%E6%9F%A5%E6%89%BE%E5%AD%97%E7%AC%A6%E4%B8%B2/">docker logs无法查找字符串</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://example.com"/></form></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> Categories</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/docker/">docker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> Tags</i></div><div class="tagcloud"><a href="/tags/python/" style="font-size: 15px;">python</a> <a href="/tags/hash/" style="font-size: 15px;">hash</a> <a href="/tags/%E7%BC%96%E7%A0%81/" style="font-size: 15px;">编码</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 15px;">算法</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/grep/" style="font-size: 15px;">grep</a> <a href="/tags/%E7%AE%A1%E9%81%93/" style="font-size: 15px;">管道</a> <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" style="font-size: 15px;">读书笔记</a> <a href="/tags/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" style="font-size: 15px;">二分查找</a> <a href="/tags/%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F/" style="font-size: 15px;">选择排序</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> Recent</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2020/09/28/%E3%80%8A%E7%AE%97%E6%B3%95%E5%9B%BE%E8%A7%A3%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%BA%8C%E7%AB%A0%20%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F/">《算法图解》读书笔记 第二章 选择排序</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/09/25/docker%20logs%E6%97%A0%E6%B3%95%E6%9F%A5%E6%89%BE%E5%AD%97%E7%AC%A6%E4%B8%B2/">docker logs无法查找字符串</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/09/20/%E3%80%8A%E7%AE%97%E6%B3%95%E5%9B%BE%E8%A7%A3%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%B8%80%E7%AB%A0%20%E7%AE%97%E6%B3%95%E7%AE%80%E4%BB%8B/">《算法图解》读书笔记 第一章 算法简介</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/09/17/python%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B1%BB%E5%AF%B9%E8%B1%A1%E4%B8%BA%E4%BB%80%E4%B9%88unhashable/">python自定义类对象为什么unhashable?</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/09/16/python%E8%AF%BB%E5%8F%96%E6%9C%AA%E7%9F%A5%E7%BC%96%E7%A0%81%E6%96%87%E4%BB%B6/">python读取未知编码文件</a></li></ul></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2020 <a href="/." rel="nofollow">莫非 - 技术博客.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.jsdelivr.net/gh/fancyapps/fancybox/dist/jquery.fancybox.min.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox/dist/jquery.fancybox.min.css"><script type="text/javascript" src="/js/copycode.js" successtext="Copy Successed!"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css"><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>

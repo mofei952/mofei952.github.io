@@ -28,7 +28,7 @@
 <meta property="og:description" content="广度优先搜索是一种用于图的查找算法。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-10-09T13:29:11.000Z">
-<meta property="article:modified_time" content="2020-10-09T14:10:05.457Z">
+<meta property="article:modified_time" content="2020-10-10T13:58:27.037Z">
 <meta property="article:author" content="莫非">
 <meta property="article:tag" content="算法">
 <meta property="article:tag" content="读书笔记">
@@ -186,10 +186,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-10-09 21:29:11 / 修改时间：22:10:05" itemprop="dateCreated datePublished" datetime="2020-10-09T21:29:11+08:00">2020-10-09</time>
+              <time title="创建时间：2020-10-09 21:29:11" itemprop="dateCreated datePublished" datetime="2020-10-09T21:29:11+08:00">2020-10-09</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-10-10 21:58:27" itemprop="dateModified" datetime="2020-10-10T21:58:27+08:00">2020-10-10</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -219,12 +225,13 @@
 <h3><span id="广度优先搜索">广度优先搜索</span></h3><p>广度优先搜索是一种用于图的查找算法，可帮助回答两类问题：</p>
 <ul>
 <li>第一类问题：从节点A出发，有前往节点B的路径吗？</li>
-<li>第二类问题：从节点A出发，前往节点B的哪条路径最短？</li>
+<li>第二类问题：从节点A出发，前往节点B的哪条路径最短？（最短路径问题）</li>
 </ul>
-<p>回答第二类问题需要借助队列，否则找到的可能不是最短路径。</p>
-<p>使用一个列表来记录检查过的人，这很重要。否则可能会陷入无限循环。</p>
-<p>代码实现如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">search</span>(<span class="params">name</span>):</span></span><br><span class="line">    search_queue = deque()</span><br><span class="line">    search_queue += graph[name]</span><br><span class="line">	searched = [] ←------------------------------这个数组用于记录检查过的人</span><br><span class="line">	<span class="keyword">while</span> search_queue:</span><br><span class="line">		person = search_queue.popleft()</span><br><span class="line">		<span class="keyword">if</span> person <span class="keyword">not</span> <span class="keyword">in</span> searched: ←----------仅当这个人没检查过时才检查</span><br><span class="line">			<span class="keyword">if</span> person_is_seller(person):</span><br><span class="line">				<span class="keyword">print</span> person + <span class="string">&quot; is a mango seller!&quot;</span></span><br><span class="line">				<span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">			<span class="keyword">else</span>:</span><br><span class="line">				search_queue += graph[person]</span><br><span class="line">				searched.append(person) ←------将这个人标记为检查过</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">	</span><br><span class="line">search(<span class="string">&quot;you&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>回答第二类问题需要借助队列，否则找到的可能不是最短路径，实现代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> deque</span><br><span class="line">search_queue = deque() ←------------创建一个队列</span><br><span class="line">search_queue += graph[<span class="string">&quot;you&quot;</span>] ←------将你的邻居都加入到这个搜索队列中</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> search_queue: ←------只要队列不为空</span><br><span class="line">    person = search_queue.popleft() ←------就取出其中的第一个人</span><br><span class="line">    <span class="keyword">if</span> person_is_seller(person): ←------检查这个人是否是芒果销售商</span><br><span class="line">        <span class="keyword">print</span> person + <span class="string">&quot; is a mango seller!&quot;</span> ←------是芒果销售商</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        search_queue += graph[person] ←------不是芒果销售商。将这个人的朋友都加入搜索队列</span><br><span class="line"><span class="keyword">return</span> <span class="literal">False</span> ←------如果到达了这里，就说明队列中没人是芒果销售商</span><br></pre></td></tr></table></figure>
+
+<p>使用一个列表来记录检查过的人，这很重要。否则可能会陷入无限循环，实现代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">search</span>(<span class="params">name</span>):</span></span><br><span class="line">    search_queue = deque()</span><br><span class="line">    search_queue += graph[name]</span><br><span class="line">    searched = [] ←------------------------------这个数组用于记录检查过的人</span><br><span class="line">	<span class="keyword">while</span> search_queue:</span><br><span class="line">        person = search_queue.popleft()</span><br><span class="line">        <span class="keyword">if</span> person <span class="keyword">not</span> <span class="keyword">in</span> searched: ←----------仅当这个人没检查过时才检查</span><br><span class="line">            <span class="keyword">if</span> person_is_seller(person):</span><br><span class="line">                <span class="keyword">print</span> person + <span class="string">&quot; is a mango seller!&quot;</span></span><br><span class="line">                <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                search_queue += graph[person]</span><br><span class="line">                searched.append(person) ←------将这个人标记为检查过</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">	</span><br><span class="line">search(<span class="string">&quot;you&quot;</span>)</span><br></pre></td></tr></table></figure>
 
 <p>广度优先搜索的运行时间为O (人数 + 边数)，这通常写作O (V + E )，其中V 为顶点（vertice）数，E 为边数。</p>
 <h3><span id="小结">小结</span></h3><ul>

@@ -27,16 +27,19 @@
 <meta property="og:site_name" content="莫非 - 技术博客">
 <meta property="og:description" content="动态规划是一种解决棘手问题的方法，它将问题分成小问题，并先着手解决这些小问题。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/算法图解-动态规划解背包问题的可取商品.jpg">
 <meta property="og:image" content="http://example.com/images/算法图解-动态规划解背包问题的网格.jpg">
 <meta property="og:image" content="http://example.com/images/算法图解-动态规划解背包问题的公式.jpg">
+<meta property="og:image" content="http://example.com/images/算法图解-动态规划解最长公共子串的公式.jpg">
+<meta property="og:image" content="http://example.com/images/算法图解-动态规划解最长公共子序列的公式.jpg">
 <meta property="article:published_time" content="2020-10-23T12:34:30.000Z">
-<meta property="article:modified_time" content="2020-10-23T12:59:51.038Z">
+<meta property="article:modified_time" content="2020-10-24T14:36:09.378Z">
 <meta property="article:author" content="莫非">
 <meta property="article:tag" content="读书笔记">
 <meta property="article:tag" content="MySQL">
 <meta property="article:tag" content="《MySQL必知必会》">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/images/算法图解-动态规划解背包问题的网格.jpg">
+<meta name="twitter:image" content="http://example.com/images/算法图解-动态规划解背包问题的可取商品.jpg">
 
 <link rel="canonical" href="http://example.com/2020/10/23/%E3%80%8A%E7%AE%97%E6%B3%95%E5%9B%BE%E8%A7%A3%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%B9%9D%E7%AB%A0%20%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">
 
@@ -188,10 +191,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-10-23 20:34:30 / 修改时间：20:59:51" itemprop="dateCreated datePublished" datetime="2020-10-23T20:34:30+08:00">2020-10-23</time>
+              <time title="创建时间：2020-10-23 20:34:30" itemprop="dateCreated datePublished" datetime="2020-10-23T20:34:30+08:00">2020-10-23</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-10-24 22:36:09" itemprop="dateModified" datetime="2020-10-24T22:36:09+08:00">2020-10-24</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -214,16 +223,61 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>动态规划先解决子问题，再逐步解决大问题。</p>
-<h3><span id="背包问题">背包问题</span></h3><p>对于背包问题，你先解决小背包（子背包）问题，再逐步解决原来的问题。</p>
-<p>每个动态规划算法都从一个网格开始，背包问题的网格如下。</p>
+        <h3><span id="动态规划">动态规划</span></h3><p>工作原理：动态规划先解决子问题，再逐步解决大问题。</p>
+<p>如何设计出动态规划解决方案：</p>
+<ul>
+<li>每种动态规划解决方案都涉及网格</li>
+<li>单元格中的值通常就是你要优化的值。在背包问题中，单元格的值为商品的价值。</li>
+<li>每个单元格都是一个子问题，因此应考虑如何将问题分成子问题，这有助于找出网格的坐标轴。</li>
+</ul>
+<h3><span id="背包问题">背包问题</span></h3><p><strong>问题描述</strong></p>
+<p>往一个可装35磅的背包装东西，可以装的东西以下三种：</p>
+<img src="/images/算法图解-动态规划解背包问题的可取商品.jpg">
+
+<p><strong>动态规划的做法</strong></p>
+<p>对于背包问题，你先解决小背包（子背包）问题，再逐步解决原来的问题。</p>
+<p>每个动态规划算法都从一个网格开始，背包问题的网格如下：</p>
 <img src="/images/算法图解-动态规划解背包问题的网格.jpg">
 
+<p>网格最初是空的。你将填充其中的每个单元格，网格填满后，就找到了问题的答案！</p>
 <p>计算每个单元格的价值时，使用的公式都相同。这个公式如下。</p>
 <img src="/images/算法图解-动态规划解背包问题的公式.jpg">
 
-<p>网格最初是空的。你将填充其中的每个单元格，网格填满后，就找到了问题的答案！</p>
-<h3><span id="最长公共子串">最长公共子串</span></h3><h3><span id="小结">小结</span></h3><ul>
+<p><strong>FAQ</strong></p>
+<p>问题1：沿着一列往下走时，最大价值有可能降低吗？</p>
+<p>答：不可能。每次迭代时，你都存储当前的最大价值。最大价值不可能比以前低！</p>
+<p>问题2：行的排列顺序发生变化时结果将如何</p>
+<p>答：各行的排列顺序无关紧要。</p>
+<p>问题3：可以逐列而不是逐行填充网格吗？</p>
+<p>就这个问题而言，这没有任何影响，但对于其他问题，可能有影响。</p>
+<p>问题4：增加一件更小的商品将如何做呢。假设加入一条项链，它重0.5磅，价值1000美元。</p>
+<p>答：由于项链的加入，需要考虑的粒度更细，因此必须调整网格，横坐标以0.5磅为一个单位</p>
+<p>问题5：如果可以拿商品的一部分，比如大米，这时如何使用动态规划来处理？</p>
+<p>答：不能使用动态规划。可以使用贪婪算法，首先，尽可能多地拿价值最高的商品；如果拿光了，再尽可能多地拿价值次高的商品，以此类推。</p>
+<p>问题6：如果两个商品互相依赖该如何建模。比如将吉他加入“背包”后，音响将更“便宜”。</p>
+<p>答：没办法建模。仅当每个子问题都是离散的，即不依赖于其他子问题时，动态规划才管用 。</p>
+<p>问题7：计算最终的解时会涉及两个以上的子背包吗</p>
+<p>答：根据动态规划算法的设计，最多只需合并两个子背包，即根本不会涉及两个以上的子背包。不过这些子背包可能又包含子背包。</p>
+<p>问题8：最优解可能导致背包没装满吗？</p>
+<p>答：可能</p>
+<h3><span id="最长公共子串">最长公共子串</span></h3><p><strong>问题描述</strong></p>
+<p>fish和vista这两个单词哪一个和hish更像。</p>
+<p><strong>问题分析</strong></p>
+<p>我们要找出两个单词的最长公共子串。找出hish和fish都包含的最长子串，以及hish和vista的最长子串，然后比较两个最长子串的长度。</p>
+<p><strong>动态规划</strong></p>
+<p>用动态规划来找出两个单词的最长公共子串的公式：</p>
+<img src="/images/算法图解-动态规划解最长公共子串的公式.jpg">
+
+<p>伪代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if word_a[i] &#x3D;&#x3D; word_b[j]: ←---------两个字母相同</span><br><span class="line">	cell[i][j] &#x3D; cell[i-1][j-1] + 1</span><br><span class="line">else: ←------------------------------两个字母不同</span><br><span class="line">	cell[i][j] &#x3D; 0</span><br></pre></td></tr></table></figure>
+
+<p>动态规划找出两个单词的最长公共子序列的公式：</p>
+<img src="/images/算法图解-动态规划解最长公共子序列的公式.jpg">
+
+<p>伪代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if word_a[i] &#x3D;&#x3D; word_b[j]: ←--------两个字母相同</span><br><span class="line">cell[i][j] &#x3D; cell[i-1][j-1] + 1</span><br><span class="line">else: ←------------------------------两个字母不同</span><br><span class="line">cell[i][j] &#x3D; max(cell[i-1][j], cell[i][j-1])</span><br></pre></td></tr></table></figure>
+
+<h3><span id="小结">小结</span></h3><ul>
 <li>需要在给定约束条件下优化某种指标时，动态规划很有用。</li>
 <li>问题可分解为离散子问题时，可使用动态规划来解决。</li>
 <li>每种动态规划解决方案都涉及网格。</li>
@@ -313,7 +367,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">背包问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text">最长公共子串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">3.</span> <span class="nav-text">小结</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">动态规划</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text">背包问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">3.</span> <span class="nav-text">最长公共子串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">4.</span> <span class="nav-text">小结</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

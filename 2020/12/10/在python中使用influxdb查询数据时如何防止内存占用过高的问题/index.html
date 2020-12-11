@@ -28,7 +28,7 @@
 <meta property="og:description" content="本文介绍在python中查询influxdb数据的多种方式以及各方式内存占用情况。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-10T12:32:18.000Z">
-<meta property="article:modified_time" content="2020-12-11T15:01:56.545Z">
+<meta property="article:modified_time" content="2020-12-11T15:07:59.722Z">
 <meta property="article:author" content="莫非">
 <meta property="article:tag" content="InfluxDB">
 <meta name="twitter:card" content="summary">
@@ -191,7 +191,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-11 23:01:56" itemprop="dateModified" datetime="2020-12-11T23:01:56+08:00">2020-12-11</time>
+                <time title="修改时间：2020-12-11 23:07:59" itemprop="dateModified" datetime="2020-12-11T23:07:59+08:00">2020-12-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -215,7 +215,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2><span id="背景">背景</span></h2><p>由于业务需求，需要查询influxdb数据且数据量较大，所以要找到一种能防止出现内存使用过高的查询方法。</p>
+        <h2><span id="背景">背景</span></h2><p>由于业务的需求，需要在python中查询influxdb数据且数据量较大。所以需要调研一种能防止出现内存使用过高的查询方法。</p>
 <p>下面对查询influxdb数据的三种方法的内存占用情况进行分析。</p>
 <h2><span id="默认方式">默认方式</span></h2><p>在python中查询influxdb数据时，一般会这样做：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> influxdb <span class="keyword">import</span> InfluxDBClient</span><br><span class="line">client = InfluxDBClient(<span class="string">&#x27;xx.xx.xx.xx&#x27;</span>, <span class="number">8086</span>, database=<span class="string">&#x27;monitor&#x27;</span>)</span><br><span class="line">result = client.query(<span class="string">&quot;SELECT * FROM xx&quot;</span>)</span><br><span class="line"><span class="keyword">for</span> point <span class="keyword">in</span> result.get_points():</span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
@@ -224,7 +224,7 @@
 <blockquote>
 <p>Return a generator for all the points that match the given filters.</p>
 </blockquote>
-<p>get_points()方法会返回一个生成器，那么是不是意味着这种方式已经考虑到了查询大数据集的情况。</p>
+<p>get_points()方法会返回一个生成器，那么是不是意味着这种方式已经考虑到了查询大数据集的情况呢。</p>
 <p>那下面就来测试一下内存占用情况。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Line #    Mem usage    Increment  Occurences   Line Contents</span><br><span class="line">&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br><span class="line">     7  51.5586 MiB  51.5586 MiB           1   @profile(precision&#x3D;4)</span><br><span class="line">     8                                         def test():</span><br><span class="line">     9  53.1250 MiB   1.5664 MiB           1       result &#x3D; client.query(&quot;SELECT * FROM &#123;&#125; WHERE ip&#x3D;&#39;&#123;&#125;&#39; limit 1000&quot;.format(&#39;sysio&#39;, &#39;192.168.238.35&#39;))</span><br><span class="line">    10  53.1250 MiB   0.0000 MiB        1001       for point in result.get_points():</span><br><span class="line">    11  53.1250 MiB   0.0000 MiB        1000           pass</span><br></pre></td></tr></table></figure>
 
@@ -246,9 +246,9 @@
 <p>为什么分块了却没有减少内存的使用呢，这一点在influxdb的源码中可以看出。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_read_chunked_response</span>(<span class="params">response, raise_errors=True</span>):</span></span><br><span class="line">    result_set = &#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> response.iter_lines():</span><br><span class="line">        <span class="keyword">if</span> isinstance(line, bytes):</span><br><span class="line">            line = line.decode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">        data = json.loads(line)</span><br><span class="line">        <span class="keyword">for</span> result <span class="keyword">in</span> data.get(<span class="string">&#x27;results&#x27;</span>, []):</span><br><span class="line">            <span class="keyword">for</span> _key <span class="keyword">in</span> result:</span><br><span class="line">                <span class="keyword">if</span> isinstance(result[_key], list):</span><br><span class="line">                    result_set.setdefault(</span><br><span class="line">                        _key, []).extend(result[_key])</span><br><span class="line">    <span class="keyword">return</span> ResultSet(result_set, raise_errors=raise_errors)</span><br></pre></td></tr></table></figure>
 
-<p>_read_chunked_response函数使用一个字典存放了分块后的所有内容，而没有使用生成器的方式，这就解释了为什么使用的内存没有减少反而增加了。</p>
-<p>那改写成生成器不就可以了，其实influxdb的后续版本已经<a target="_blank" rel="noopener" href="https://github.com/influxdata/influxdb-python/pull/753#ref-pullrequest-586016228">实现了这一功能</a>，但是在我的机器上并<a target="_blank" rel="noopener" href="https://github.com/influxdata/influxdb-python/issues/820">没有执行成功</a>，所以这一部分不展开描述了。</p>
-<h2><span id="分页方式">分页方式</span></h2><p>既然influxdb库中提供的方法都没有办法实现我们的目的，那只能自己来实现了。</p>
+<p>_read_chunked_response函数使用一个字典来存放分块后的所有内容，而没有使用生成器的方式，这就解释了为什么使用的内存没有减少反而增加了。</p>
+<p>那是不是改写成生成器不就可以了，其实influxdb的后续版本已经<a target="_blank" rel="noopener" href="https://github.com/influxdata/influxdb-python/pull/753#ref-pullrequest-586016228">实现了这一功能</a>，但是在我的机器上并<a target="_blank" rel="noopener" href="https://github.com/influxdata/influxdb-python/issues/820">没有执行成功</a>，所以这一部分就不展开描述了。</p>
+<h2><span id="分页方式">分页方式</span></h2><p>既然influxdb库中提供的方法暂时都没有办法实现我们的目的，那只能自己来实现了。</p>
 <p>简单实现了一个分页查询（仅用于测试），代码如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">query</span>(<span class="params">count</span>):</span></span><br><span class="line">    limit = <span class="number">100</span></span><br><span class="line">    <span class="keyword">for</span> offset <span class="keyword">in</span> range(<span class="number">0</span>, count, limit):</span><br><span class="line">        limit = min(count-offset, limit)</span><br><span class="line">        result = client.query(<span class="string">&quot;SELECT * FROM &#123;&#125; WHERE ip=&#x27;&#123;&#125;&#x27; LIMIT &#123;&#125; OFFSET &#123;&#125;&quot;</span>.format(</span><br><span class="line">            <span class="string">&#x27;sysio&#x27;</span>, <span class="string">&#x27;192.168.238.35&#x27;</span>, limit, offset))</span><br><span class="line">        <span class="keyword">yield</span> <span class="keyword">from</span> result.get_points()</span><br></pre></td></tr></table></figure>
 
@@ -259,7 +259,7 @@
 
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Line #    Mem usage    Increment  Occurences   Line Contents</span><br><span class="line">&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span><br><span class="line">    32  51.5117 MiB  51.5117 MiB           1   @profile(precision&#x3D;4)</span><br><span class="line">    33                                         def test3():</span><br><span class="line">    34  52.4766 MiB   0.9648 MiB        2440       for point in query(3000):</span><br><span class="line">    35  52.4766 MiB   0.0000 MiB        2439           pass</span><br></pre></td></tr></table></figure>
 
-<p>从测试结果可以看出，随着数据量的增加，使用的内存基本保持不变，说明该方法可以防止出现内存使用过高。</p>
+<p>从测试结果可以看出，随着数据量的增加，使用的内存基本保持不变，说明该方法符合我们的需求。</p>
 <h2><span id="结论">结论</span></h2><p>以上三种方法中，只有分页方式可以防止出现内存不足的问题。</p>
 
     </div>

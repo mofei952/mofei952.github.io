@@ -20,23 +20,22 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="分而治之（D&amp;C）是一种通用的问题解决方法。快速排序使用了D&amp;C的策略。">
+  <meta name="description" content="本章学习如何分组数据，以便能汇总表内容的子集。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="《算法图解》读书笔记 第四章 快速排序">
-<meta property="og:url" content="http://example.com/2020/09/30/%E3%80%8A%E7%AE%97%E6%B3%95%E5%9B%BE%E8%A7%A3%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%9B%9B%E7%AB%A0%20%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/index.html">
+<meta property="og:title" content="《MySQL必知必会》读书笔记 第十三章 分组数据">
+<meta property="og:url" content="http://example.com/2020/12/19/%E3%80%8AMySQL%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A%E3%80%8B%E7%AC%AC%E5%8D%81%E4%B8%89%E7%AB%A0%20%E5%88%86%E7%BB%84%E6%95%B0%E6%8D%AE/index.html">
 <meta property="og:site_name" content="莫非 - 技术博客">
-<meta property="og:description" content="分而治之（D&amp;C）是一种通用的问题解决方法。快速排序使用了D&amp;C的策略。">
+<meta property="og:description" content="本章学习如何分组数据，以便能汇总表内容的子集。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-09-30T13:39:18.000Z">
-<meta property="article:modified_time" content="2020-10-05T14:32:00.319Z">
+<meta property="article:published_time" content="2020-12-19T13:37:22.000Z">
+<meta property="article:modified_time" content="2020-12-19T15:00:44.137Z">
 <meta property="article:author" content="莫非">
+<meta property="article:tag" content="MySQL">
 <meta property="article:tag" content="读书笔记">
-<meta property="article:tag" content="算法">
-<meta property="article:tag" content="《算法图解》">
-<meta property="article:tag" content="快速排序">
+<meta property="article:tag" content="《MySQL必知必会》">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/2020/09/30/%E3%80%8A%E7%AE%97%E6%B3%95%E5%9B%BE%E8%A7%A3%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%9B%9B%E7%AB%A0%20%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/">
+<link rel="canonical" href="http://example.com/2020/12/19/%E3%80%8AMySQL%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A%E3%80%8B%E7%AC%AC%E5%8D%81%E4%B8%89%E7%AB%A0%20%E5%88%86%E7%BB%84%E6%95%B0%E6%8D%AE/">
 
 
 <script id="page-configurations">
@@ -49,7 +48,7 @@
   };
 </script>
 
-  <title>《算法图解》读书笔记 第四章 快速排序 | 莫非 - 技术博客</title>
+  <title>《MySQL必知必会》读书笔记 第十三章 分组数据 | 莫非 - 技术博客</title>
   
 
 
@@ -164,7 +163,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/30/%E3%80%8A%E7%AE%97%E6%B3%95%E5%9B%BE%E8%A7%A3%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%9B%9B%E7%AB%A0%20%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/19/%E3%80%8AMySQL%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A%E3%80%8B%E7%AC%AC%E5%8D%81%E4%B8%89%E7%AB%A0%20%E5%88%86%E7%BB%84%E6%95%B0%E6%8D%AE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -177,7 +176,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          《算法图解》读书笔记 第四章 快速排序
+          《MySQL必知必会》读书笔记 第十三章 分组数据
         </h1>
 
         <div class="post-meta">
@@ -186,28 +185,22 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-09-30 21:39:18" itemprop="dateCreated datePublished" datetime="2020-09-30T21:39:18+08:00">2020-09-30</time>
+              <time title="创建时间：2020-12-19 21:37:22 / 修改时间：23:00:44" itemprop="dateCreated datePublished" datetime="2020-12-19T21:37:22+08:00">2020-12-19</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-10-05 22:32:00" itemprop="dateModified" datetime="2020-10-05T22:32:00+08:00">2020-10-05</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+                  <a href="/categories/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a>
                 </span>
             </span>
 
           
-            <div class="post-description">分而治之（D&C）是一种通用的问题解决方法。快速排序使用了D&C的策略。</div>
+            <div class="post-description">本章学习如何分组数据，以便能汇总表内容的子集。</div>
 
         </div>
       </header>
@@ -218,42 +211,80 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3><span id="分而治之">分而治之</span></h3><p>分而治之（D&amp;C）是一种通用的问题解决方法。</p>
-<p>D&amp;C并非可用于解决问题的算法，而是一种解决问题的思路。我们经常用递归算法来实现分而治之。</p>
-<p>使用D&amp;C解决问题的过程包括两个步骤。</p>
-<ol>
-<li>找出基线条件，这种条件必须尽可能简单。</li>
-<li>不断将问题分解（或者说缩小规模），直到符合基线条件。</li>
-</ol>
-<p>编写涉及数组的递归函数时，基线条件通常是数组为空或只包含一个元素。陷入困境时，请检查基线条件是不是这样的。</p>
-<h3><span id="快速排序">快速排序</span></h3><p>快速排序使用了D&amp;C的策略。</p>
-<p>快速排序是一种常用的排序算法，比选择排序快得多。</p>
-<p>基线条件为数组为空或只包含一个元素。在这种情况下，只需原样返回数组——根本就不用排序。</p>
-<p>快速排序的步骤：</p>
-<ol>
-<li>选择基准值。</li>
-<li>将数组分成两个子数组：小于基准值的元素和大于基准值的元素。</li>
-<li>这两个子数组进行快速排序。</li>
-</ol>
-<p>快速排序的代码：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">quicksort</span>(<span class="params">array</span>):</span></span><br><span class="line">    <span class="keyword">if</span> len(array) &lt; <span class="number">2</span>: ←------基线条件：为空或只包含一个元素的数组是“有序”的</span><br><span class="line">    	<span class="keyword">return</span> array</span><br><span class="line">    <span class="keyword">else</span>: ←------递归条件</span><br><span class="line">        pivot = array[<span class="number">0</span>]</span><br><span class="line">        less = [i <span class="keyword">for</span> i <span class="keyword">in</span> array[<span class="number">1</span>:] <span class="keyword">if</span> i &lt;= pivot] ←------由所有小于基准值的元素组成的子数组</span><br><span class="line">        greater = [i <span class="keyword">for</span> i <span class="keyword">in</span> array[<span class="number">1</span>:] <span class="keyword">if</span> i &gt; pivot] ←------由所有大于基准值的元素组成的子数</span><br><span class="line">        <span class="keyword">return</span> quicksort(less) + [pivot] + quicksort(greater)</span><br></pre></td></tr></table></figure>
+        <h3><span id="数据分组">数据分组</span></h3><p>数据分组会涉及两个新SELECT语句子句，分别是GROUP BY子句和HAVING子句。</p>
+<p>分组允许把数据分为多个逻辑组，以便能对每个组进行聚集计算。</p>
+<h3><span id="创建分组">创建分组</span></h3><p>分组是在SELECT语句的GROUP BY子句中建立的。</p>
+<p>检索每个供应商的产品数量</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> vend_id, <span class="keyword">COUNT</span>(*) <span class="keyword">AS</span> num_prods</span><br><span class="line"><span class="keyword">FROM</span> products</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> vend_id;</span><br></pre></td></tr></table></figure>
 
-<p>排序算法的运行时间比较：</p>
+<p>在具体使用GROUP BY子句前，需要知道一些重要的规定。</p>
 <ul>
-<li><p>选择排序的运行时间为O(n<sup>2</sup>)，速度非常慢。</p>
-</li>
-<li><p>合并排序的运行时间为O(n log n)。</p>
-</li>
-<li><p>快速排序在在平均情况下的运行时间为O(n log n)，在最糟情况下的运行时间为O(n<sup>2</sup>)。它遇上平均情况的可能性要比最糟情况大得多。</p>
-</li>
+<li>GROUP BY子句可以包含任意数目的列。这使得能对分组进行嵌套，为数据分组提供更细致的控制。</li>
+<li>如果在GROUP BY子句中嵌套了分组，数据将在最后规定的分组上进行汇总。换句话说，在建立分组时，指定的所有列都一起计算（所以不能从个别的列取回数据）。</li>
+<li>GROUP BY子句中列出的每个列都必须是检索列或有效的表达式（但不能是聚集函数）。如果在SELECT中使用表达式，则必须在GROUP BY子句中指定相同的表达式。不能使用别名。</li>
+<li>除聚集计算语句外，SELECT语句中的每个列都必须在GROUP BY子句中给出。</li>
+<li>如果分组列中具有NULL值，则NULL将作为一个分组返回。如果列中有多行NULL值，它们将分为一组。</li>
+<li>GROUP BY子句必须出现在WHERE子句之后，ORDER BY子句之前。</li>
 </ul>
-<p>有时候，常量的影响可能很大，对快速排序和合并排序来说就是如此。快速排序和合并排序的运行时间都为O(n log n)，但快速排序的常量比合并排序小，因此快速排序的速度将更快。（<a href="/2020/10/04/%E4%B8%BA%E4%BB%80%E4%B9%88%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%E7%9A%84%E5%B8%B8%E9%87%8F%E6%AF%94%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F%E5%B0%8F/" title="为什么快速排序的常量比归并排序小？">为什么快速排序的常量比归并排序小？</a>）</p>
-<h3><span id="小结">小结</span></h3><ul>
-<li>D&amp;C将问题逐步分解。使用D&amp;C处理列表时，基线条件很可能是空数组或只包含一个元素的数组。</li>
-<li>实现快速排序时，请随机地选择用作基准值的元素。快速排序的平均运行时间为O(n log n)。</li>
-<li>大O表示法中的常量有时候事关重大，这就是快速排序比合并排序快的原因所在。</li>
-<li>比较简单查找和二分查找时，常量几乎无关紧要，因为列表很长时，O(log n)的速度比O(n)快得多。</li>
-</ul>
+<p>使用WITH ROLLUP关键字，可以得到每个分组以及每个分组汇总级别（针对每个分组）的值</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> vend_id, <span class="keyword">COUNT</span>(*) <span class="keyword">AS</span> num_prods</span><br><span class="line"><span class="keyword">FROM</span> products</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> vend_id <span class="keyword">WITH</span> <span class="keyword">ROLLUP</span>;</span><br></pre></td></tr></table></figure>
+
+<h3><span id="过滤分组">过滤分组</span></h3><p>过滤分组需要使用HAVING子句。</p>
+<p>目前为止所学过的所有类型的WHERE子句都可以用HAVING来替代。唯一的差别是WHERE过滤行，而HAVING过滤分组。</p>
+<p>检索有两个及以上产品数量的供应商</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> cust_id, <span class="keyword">COUNT</span>(*) <span class="keyword">AS</span> orders</span><br><span class="line"><span class="keyword">FROM</span> orders</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> cust_id</span><br><span class="line"><span class="keyword">HAVING</span> <span class="keyword">COUNT</span>(*) &gt;= <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<p>具有2个（含）以上、价格为10（含）以上的产品的供应商</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> cust_id, <span class="keyword">COUNT</span>(*) <span class="keyword">AS</span> num_prods</span><br><span class="line"><span class="keyword">FROM</span> products </span><br><span class="line"><span class="keyword">WHERE</span> prod_price &gt;= <span class="number">10</span></span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> vend_id</span><br><span class="line"><span class="keyword">HAVING</span> <span class="keyword">COUNT</span>(*) &gt;= <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<h3><span id="分组和排序">分组和排序</span></h3><p>检索总计订单价格大于等于50的订单的订单号和总计订单价格，并按总计订单价格排序输出</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> order_num, <span class="keyword">SUM</span>(quantity*item_price) <span class="keyword">AS</span> ordertotal</span><br><span class="line"><span class="keyword">FROM</span> orderitems</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> order_num</span><br><span class="line"><span class="keyword">HAVING</span> <span class="keyword">SUM</span>(quantity*item_price) &gt;= <span class="number">5</span></span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> ordertotal;</span><br></pre></td></tr></table></figure>
+
+<h3><span id="select子句顺序">SELECT子句顺序</span></h3><p>SELECT子句及其顺序如下：</p>
+<table>
+<thead>
+<tr>
+<th>子句</th>
+<th>说明</th>
+<th>是否必须使用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SELECT</td>
+<td>要返回的列或表达式</td>
+<td>是</td>
+</tr>
+<tr>
+<td>FROM</td>
+<td>从中检索数据的表</td>
+<td>仅在从表选择数据时使用</td>
+</tr>
+<tr>
+<td>WHERE</td>
+<td>行级过滤</td>
+<td>否</td>
+</tr>
+<tr>
+<td>GROUP BY</td>
+<td>分组说明</td>
+<td>仅在按组计算聚集时使用</td>
+</tr>
+<tr>
+<td>HAVING</td>
+<td>组级过滤</td>
+<td>否</td>
+</tr>
+<tr>
+<td>ORDER BY</td>
+<td>输出排序顺序</td>
+<td>否</td>
+</tr>
+<tr>
+<td>LIMIT</td>
+<td>要检索的行数</td>
+<td>否</td>
+</tr>
+</tbody></table>
 
     </div>
 
@@ -263,10 +294,9 @@
 
       <footer class="post-footer">
           <div class="post-tags">
+              <a href="/tags/MySQL/" rel="tag"># MySQL</a>
               <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag"># 读书笔记</a>
-              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"># 算法</a>
-              <a href="/tags/%E3%80%8A%E7%AE%97%E6%B3%95%E5%9B%BE%E8%A7%A3%E3%80%8B/" rel="tag"># 《算法图解》</a>
-              <a href="/tags/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/" rel="tag"># 快速排序</a>
+              <a href="/tags/%E3%80%8AMySQL%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A%E3%80%8B/" rel="tag"># 《MySQL必知必会》</a>
           </div>
 
         
@@ -275,13 +305,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/09/29/%E3%80%8A%E7%AE%97%E6%B3%95%E5%9B%BE%E8%A7%A3%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%B8%89%E7%AB%A0%20%E9%80%92%E5%BD%92/" rel="prev" title="《算法图解》读书笔记 第三章 递归">
-      <i class="fa fa-chevron-left"></i> 《算法图解》读书笔记 第三章 递归
+    <a href="/2020/12/10/%E5%9F%BA%E4%BA%8EPython%E4%BB%8EInfluxDB%E4%B8%AD%E8%AF%BB%E5%8F%96%E5%A4%A7%E9%87%8F%E6%95%B0%E6%8D%AE%E5%AE%9E%E8%B7%B5/" rel="prev" title="基于Python从InfluxDB中读取大量数据实践">
+      <i class="fa fa-chevron-left"></i> 基于Python从InfluxDB中读取大量数据实践
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/10/04/%E4%B8%BA%E4%BB%80%E4%B9%88%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%E7%9A%84%E5%B8%B8%E9%87%8F%E6%AF%94%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F%E5%B0%8F/" rel="next" title="为什么快速排序的常量比归并排序小？">
-      为什么快速排序的常量比归并排序小？ <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -340,7 +367,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">分而治之</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text">快速排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">3.</span> <span class="nav-text">小结</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">数据分组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text">创建分组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">3.</span> <span class="nav-text">过滤分组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">4.</span> <span class="nav-text">分组和排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">5.</span> <span class="nav-text">SELECT子句顺序</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

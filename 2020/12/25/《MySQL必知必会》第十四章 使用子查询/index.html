@@ -20,22 +20,22 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="本章学习什么是通配符以及如何在WHERE子句中使用SQL通配符。">
+  <meta name="description" content="本章学习什么是子查询以及如何使用它。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="《MySQL必知必会》读书笔记 第八章 用通配符进行过滤">
-<meta property="og:url" content="http://example.com/2020/11/11/%E3%80%8AMySQL%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%85%AB%E7%AB%A0%20%E7%94%A8%E9%80%9A%E9%85%8D%E7%AC%A6%E8%BF%9B%E8%A1%8C%E8%BF%87%E6%BB%A4/index.html">
+<meta property="og:title" content="《MySQL必知必会》读书笔记 第十四章 使用子查询">
+<meta property="og:url" content="http://example.com/2020/12/25/%E3%80%8AMySQL%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A%E3%80%8B%E7%AC%AC%E5%8D%81%E5%9B%9B%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E5%AD%90%E6%9F%A5%E8%AF%A2/index.html">
 <meta property="og:site_name" content="莫非 - 技术博客">
-<meta property="og:description" content="本章学习什么是通配符以及如何在WHERE子句中使用SQL通配符。">
+<meta property="og:description" content="本章学习什么是子查询以及如何使用它。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-11-11T14:03:24.000Z">
-<meta property="article:modified_time" content="2020-11-12T13:20:14.637Z">
+<meta property="article:published_time" content="2020-12-25T13:56:42.000Z">
+<meta property="article:modified_time" content="2020-12-25T14:18:11.582Z">
 <meta property="article:author" content="莫非">
 <meta property="article:tag" content="MySQL">
 <meta property="article:tag" content="读书笔记">
 <meta property="article:tag" content="《MySQL必知必会》">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/2020/11/11/%E3%80%8AMySQL%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%85%AB%E7%AB%A0%20%E7%94%A8%E9%80%9A%E9%85%8D%E7%AC%A6%E8%BF%9B%E8%A1%8C%E8%BF%87%E6%BB%A4/">
+<link rel="canonical" href="http://example.com/2020/12/25/%E3%80%8AMySQL%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A%E3%80%8B%E7%AC%AC%E5%8D%81%E5%9B%9B%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E5%AD%90%E6%9F%A5%E8%AF%A2/">
 
 
 <script id="page-configurations">
@@ -48,7 +48,7 @@
   };
 </script>
 
-  <title>《MySQL必知必会》读书笔记 第八章 用通配符进行过滤 | 莫非 - 技术博客</title>
+  <title>《MySQL必知必会》读书笔记 第十四章 使用子查询 | 莫非 - 技术博客</title>
   
 
 
@@ -163,7 +163,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/11/11/%E3%80%8AMySQL%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%85%AB%E7%AB%A0%20%E7%94%A8%E9%80%9A%E9%85%8D%E7%AC%A6%E8%BF%9B%E8%A1%8C%E8%BF%87%E6%BB%A4/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/12/25/%E3%80%8AMySQL%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A%E3%80%8B%E7%AC%AC%E5%8D%81%E5%9B%9B%E7%AB%A0%20%E4%BD%BF%E7%94%A8%E5%AD%90%E6%9F%A5%E8%AF%A2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -176,7 +176,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          《MySQL必知必会》读书笔记 第八章 用通配符进行过滤
+          《MySQL必知必会》读书笔记 第十四章 使用子查询
         </h1>
 
         <div class="post-meta">
@@ -185,16 +185,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-11-11 22:03:24" itemprop="dateCreated datePublished" datetime="2020-11-11T22:03:24+08:00">2020-11-11</time>
+              <time title="创建时间：2020-12-25 21:56:42 / 修改时间：22:18:11" itemprop="dateCreated datePublished" datetime="2020-12-25T21:56:42+08:00">2020-12-25</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-11-12 21:20:14" itemprop="dateModified" datetime="2020-11-12T21:20:14+08:00">2020-11-12</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -206,7 +200,7 @@
             </span>
 
           
-            <div class="post-description">本章学习什么是通配符以及如何在WHERE子句中使用SQL通配符。</div>
+            <div class="post-description">本章学习什么是子查询以及如何使用它。</div>
 
         </div>
       </header>
@@ -217,24 +211,31 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3><span id="like操作符">LIKE操作符</span></h3><p>通配符（wildcard）是用来匹配值的一部分的特殊字符。</p>
-<p>搜索模式（search pattern）是由字面值、通配符或两者组合构成的搜索条件。</p>
-<p>利用通配符可创建比较特定数据的搜索模式。</p>
-<p>为在搜索子句中使用通配符，必须使用LIKE操作符。LIKE后跟的搜索模式利用通配符匹配而不是直接相等匹配进行比较。</p>
-<h4><span id="百分号通配符">百分号（%）通配符</span></h4><p>最常使用的通配符是百分号（%）。在搜索串中，%表示任何字符出现任意次数。</p>
-<p>%代表搜索模式中给定位置的0个、1个或多个字符。不能匹配NULL值。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> prod_id, prod_name</span><br><span class="line"><span class="keyword">FROM</span> products</span><br><span class="line"><span class="keyword">WHERE</span> prod_name <span class="keyword">LIKE</span> <span class="string">&#x27;jet%&#x27;</span>;</span><br></pre></td></tr></table></figure>
+        <h3><span id="子查询">子查询</span></h3><p>MySQL 4.1引入了对子查询的支持。子查询（subquery）是嵌套在其他查询中的查询。</p>
+<h3><span id="利用子查询进行过滤">利用子查询进行过滤</span></h3><p>列出订购物品TNT2的所有客户，步骤如下</p>
+<ol>
+<li>检索包含物品TNT2的所有订单的编号。</li>
+<li>检索具有前一步骤列出的订单编号的所有客户的ID。</li>
+<li>检索前一步骤返回的所有客户ID的客户信息。</li>
+</ol>
+<p>可以把以上每个步骤单独查询，上一条语句返回的记过用于下一条语句的筛选条件</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> order_num</span><br><span class="line"><span class="keyword">FROM</span> orderitems</span><br><span class="line"><span class="keyword">WHERE</span> prod_id = <span class="string">&#x27;TNT2&#x27;</span>;</span><br></pre></td></tr></table></figure>
 
-<p>此语句会检索出所有以词jet起头的产品。</p>
-<h4><span id="下划线_通配符">下划线（_）通配符</span></h4><p>下划线只匹配单个字符而不是多个字符。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> prod_id, prod_name</span><br><span class="line"><span class="keyword">FROM</span> products</span><br><span class="line"><span class="keyword">WHERE</span> prod_name <span class="keyword">LIKE</span> <span class="string">&#x27;_ ton anvil&#x27;</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> cust_id</span><br><span class="line"><span class="keyword">FROM</span> orders</span><br><span class="line"><span class="keyword">WHERE</span> order_num <span class="keyword">IN</span> (<span class="number">20005</span>, <span class="number">20007</span>);</span><br></pre></td></tr></table></figure>
 
-<h3><span id="使用通配符的技巧">使用通配符的技巧</span></h3><p>正如所见，MySQL的通配符很有用。但这种功能是有代价的：通配符搜索的处理一般要比前面讨论的其他搜索所花时间更长。这里给出一些使用通配符要记住的技巧。</p>
-<ul>
-<li>不要过度使用通配符。如果其他操作符能达到相同的目的，应该使用其他操作符。</li>
-<li>在确实需要使用通配符时，除非绝对有必要，否则不要把它们用在搜索模式的开始处。把通配符置于搜索模式的开始处，搜索起来是最慢的。</li>
-<li>仔细注意通配符的位置。如果放错地方，可能不会返回想要的数据。</li>
-</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> cust_name, cust_contact</span><br><span class="line"><span class="keyword">FROM</span> customers</span><br><span class="line"><span class="keyword">WHERE</span> cust_id <span class="keyword">IN</span> (<span class="number">10001</span>, <span class="number">10004</span>);</span><br></pre></td></tr></table></figure>
+
+<p>用子查询组合以上SQL</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> cust_name, cust_contact</span><br><span class="line"><span class="keyword">FROM</span> customers</span><br><span class="line"><span class="keyword">WHERE</span> cust_id <span class="keyword">IN</span> (<span class="keyword">SELECT</span> cust_id</span><br><span class="line">                  <span class="keyword">FROM</span> orders</span><br><span class="line">                  <span class="keyword">WHERE</span> order_num <span class="keyword">IN</span> (<span class="keyword">SELECT</span> order_num</span><br><span class="line">                                      <span class="keyword">FROM</span> orderitems</span><br><span class="line">                                      <span class="keyword">WHERE</span> prod_id = <span class="string">&#x27;TNT2&#x27;</span>));</span><br></pre></td></tr></table></figure>
+
+<p>在WHERE子句中使用子查询（如这里所示），应该保证SELECT语句具有与WHERE子句中相同数目的列。通常，<br>子查询将返回单个列并且与单个列匹配。</p>
+<h3><span id="作为计算字段使用子查询">作为计算字段使用子查询</span></h3><p>显示customers表中每个客户的订单总数，步骤如下：</p>
+<ol>
+<li>从customers表中检索客户列表。</li>
+<li>对于检索出的每个客户，统计其在orders表中的订单数目。</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> cust_name,</span><br><span class="line">       cust_state,</span><br><span class="line">       (<span class="keyword">SELECT</span> <span class="keyword">COUNT</span>(*)</span><br><span class="line">        <span class="keyword">FROM</span> orders</span><br><span class="line">        <span class="keyword">WHERE</span> orders.cust_id = customers.cust_id) <span class="keyword">AS</span> orders</span><br><span class="line"><span class="keyword">FROM</span> customers</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> cust_name;</span><br></pre></td></tr></table></figure>
+
 
     </div>
 
@@ -255,13 +256,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/11/07/InfluxDB%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" rel="prev" title="InfluxDB基本操作">
-      <i class="fa fa-chevron-left"></i> InfluxDB基本操作
+    <a href="/2020/12/19/%E3%80%8AMySQL%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A%E3%80%8B%E7%AC%AC%E5%8D%81%E4%B8%89%E7%AB%A0%20%E5%88%86%E7%BB%84%E6%95%B0%E6%8D%AE/" rel="prev" title="《MySQL必知必会》读书笔记 第十三章 分组数据">
+      <i class="fa fa-chevron-left"></i> 《MySQL必知必会》读书笔记 第十三章 分组数据
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/11/19/%E3%80%8A%E7%AE%97%E6%B3%95%E5%9B%BE%E8%A7%A3%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E5%8D%81%E7%AB%A0%20K%E6%9C%80%E8%BF%91%E9%82%BB%E7%AE%97%E6%B3%95/" rel="next" title="《算法图解》读书笔记 第十章 K最近邻算法">
-      《算法图解》读书笔记 第十章 K最近邻算法 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -320,7 +318,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">LIKE操作符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-number">1.1.</span> <span class="nav-text">百分号（%）通配符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-number">1.2.</span> <span class="nav-text">下划线（_）通配符</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text">使用通配符的技巧</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">子查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text">利用子查询进行过滤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">3.</span> <span class="nav-text">作为计算字段使用子查询</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

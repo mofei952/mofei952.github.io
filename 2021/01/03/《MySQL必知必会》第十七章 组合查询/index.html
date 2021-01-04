@@ -28,7 +28,7 @@
 <meta property="og:description" content="本章学习如何利用UNION操作符将多条SELECT语句组合成一个结果集。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-01-03T12:45:02.000Z">
-<meta property="article:modified_time" content="2021-01-03T12:53:17.635Z">
+<meta property="article:modified_time" content="2021-01-04T12:42:48.410Z">
 <meta property="article:author" content="莫非">
 <meta property="article:tag" content="MySQL">
 <meta property="article:tag" content="读书笔记">
@@ -185,10 +185,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-01-03 20:45:02 / 修改时间：20:53:17" itemprop="dateCreated datePublished" datetime="2021-01-03T20:45:02+08:00">2021-01-03</time>
+              <time title="创建时间：2021-01-03 20:45:02" itemprop="dateCreated datePublished" datetime="2021-01-03T20:45:02+08:00">2021-01-03</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-01-04 20:42:48" itemprop="dateModified" datetime="2021-01-04T20:42:48+08:00">2021-01-04</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -221,7 +227,22 @@
 <h4><span id="使用union">使用UNION</span></h4><p>查询价格小于等于5的所有物品和供应商1001和1002生产的所有物品</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> vend_id, prod_id, prod_price</span><br><span class="line"><span class="keyword">FROM</span> products</span><br><span class="line"><span class="keyword">WHERE</span> prod_price &lt;= <span class="number">5</span></span><br><span class="line"><span class="keyword">UNION</span></span><br><span class="line"><span class="keyword">SELECT</span> vend_id, prod_id, prod_price</span><br><span class="line"><span class="keyword">FROM</span> products</span><br><span class="line"><span class="keyword">WHERE</span> vend_id <span class="keyword">IN</span> (<span class="number">1001</span>, <span class="number">1002</span>);</span><br></pre></td></tr></table></figure>
 
-<h4><span id="union规则">UNION规则</span></h4><h4><span id="包含或取消重复的行">包含或取消重复的行</span></h4><h4><span id="对组合查询结果的排序">对组合查询结果的排序</span></h4>
+<p>在这个简单的例子中，使用UNION可能比使用WHERE子句更为复杂。但对于更复杂的过滤条件，或者从多个表中检索数据的情形，使用UNION可能会使处理更简单。</p>
+<h4><span id="union规则">UNION规则</span></h4><p>进行并时有几条规则需要注意。</p>
+<ul>
+<li>UNION必须由两条或两条以上的SELECT语句组成，语句之间用关键字UNION分隔</li>
+<li>UNION中的每个查询必须包含相同的列、表达式或聚集函数（各个列不需要以相同的次序给出）。</li>
+<li>列数据类型必须兼容：类型不必完全相同，但必须是DBMS可以隐含地转换地类型（例如不同的数值类型或不同的日期类型）。</li>
+</ul>
+<h4><span id="包含或取消重复的行">包含或取消重复的行</span></h4><p>UNION会从查询结果集中自动去除重复的行。如果想返回所有匹配行，可使用UNION ALL。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> vend_id, prod_id, prod_price</span><br><span class="line"><span class="keyword">FROM</span> products</span><br><span class="line"><span class="keyword">WHERE</span> prod_price &lt;= <span class="number">5</span></span><br><span class="line"><span class="keyword">UNION</span> <span class="keyword">ALL</span></span><br><span class="line"><span class="keyword">SELECT</span> vend_id, prod_id, prod_price</span><br><span class="line"><span class="keyword">FROM</span> products</span><br><span class="line"><span class="keyword">WHERE</span> vend_id <span class="keyword">IN</span> (<span class="number">1001</span>, <span class="number">1002</span>);</span><br></pre></td></tr></table></figure>
+
+<p>UNION几乎总是完成与多个WHERE条件相同的工作。UNION ALL为UNION的一种形式，它完成WHERE子句完成不了的工作。</p>
+<p>如果确实需要每个条件的匹配行全部出现（包括重复行），则必须使用UNION ALL而不是WHERE。</p>
+<h4><span id="对组合查询结果的排序">对组合查询结果的排序</span></h4><p>在用UNION组合查询时，只能使用一条ORDER BY子句，它必须出现在最后一条SELECT语句之后。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> vend_id, prod_id, prod_price</span><br><span class="line"><span class="keyword">FROM</span> products</span><br><span class="line"><span class="keyword">WHERE</span> prod_price &lt;= <span class="number">5</span></span><br><span class="line"><span class="keyword">UNION</span></span><br><span class="line"><span class="keyword">SELECT</span> vend_id, prod_id, prod_price</span><br><span class="line"><span class="keyword">FROM</span> products</span><br><span class="line"><span class="keyword">WHERE</span> vend_id <span class="keyword">IN</span> (<span class="number">1001</span>, <span class="number">1002</span>)</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> vend_id, prod_price;</span><br></pre></td></tr></table></figure>
+
+
     </div>
 
     

@@ -28,7 +28,7 @@
 <meta property="og:description" content="在sqlalchemy中如何sqlalchemy中取消已存在的排序规则？">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-01-31T03:53:47.000Z">
-<meta property="article:modified_time" content="2021-01-31T03:58:07.821Z">
+<meta property="article:modified_time" content="2021-01-31T04:57:00.443Z">
 <meta property="article:author" content="莫非">
 <meta property="article:tag" content="SQLAlchemy">
 <meta name="twitter:card" content="summary">
@@ -185,7 +185,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-01-31 11:53:47 / 修改时间：11:58:07" itemprop="dateCreated datePublished" datetime="2021-01-31T11:53:47+08:00">2021-01-31</time>
+              <time title="创建时间：2021-01-31 11:53:47 / 修改时间：12:57:00" itemprop="dateCreated datePublished" datetime="2021-01-31T11:53:47+08:00">2021-01-31</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -209,11 +209,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>order_by()函数的源码很简单，如下：</p>
+        <h3><span id="分析">分析</span></h3><p>order_by()函数的源码如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@inspection._self_inspects</span></span><br><span class="line"><span class="meta">@log.class_logger</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Query</span>(<span class="params">object</span>):</span></span><br><span class="line"><span class="meta">    @_generative(_no_statement_condition, _no_limit_offset)</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">order_by</span>(<span class="params">self, *criterion</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;apply one or more ORDER BY criterion to the query and return</span></span><br><span class="line"><span class="string">        the newly resulting ``Query``</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        All existing ORDER BY settings can be suppressed by</span></span><br><span class="line"><span class="string">        passing ``None`` - this will suppress any ORDER BY configured</span></span><br><span class="line"><span class="string">        on mappers as well.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Alternatively, passing False will reset ORDER BY and additionally</span></span><br><span class="line"><span class="string">        re-allow default mapper.order_by to take place.   Note mapper.order_by</span></span><br><span class="line"><span class="string">        is deprecated.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> len(criterion) == <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">if</span> criterion[<span class="number">0</span>] <span class="keyword">is</span> <span class="literal">False</span>:</span><br><span class="line">                <span class="keyword">if</span> <span class="string">&#x27;_order_by&#x27;</span> <span class="keyword">in</span> self.__dict__:</span><br><span class="line">                    self._order_by = <span class="literal">False</span></span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            <span class="keyword">if</span> criterion[<span class="number">0</span>] <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">                self._order_by = <span class="literal">None</span></span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">        criterion = self._adapt_col_list(criterion)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> self._order_by <span class="keyword">is</span> <span class="literal">False</span> <span class="keyword">or</span> self._order_by <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            self._order_by = criterion</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self._order_by = self._order_by + criterion</span><br></pre></td></tr></table></figure>
 
 <p>从order_by()函数的注释和源码都可以看出，使用order_by(None)或者order_by(False)都可以取消已存在的排序规则。</p>
-
+<h3><span id="验证">验证</span></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>User.query.order_by(User.id.desc()).order_by(<span class="literal">None</span>).all()</span><br><span class="line">[&lt;User <span class="number">1</span>&gt;, &lt;User <span class="number">2</span>&gt;, &lt;User <span class="number">3</span>&gt;, &lt;User <span class="number">4</span>&gt;, &lt;User <span class="number">5</span>&gt;]</span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -293,6 +293,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text">验证</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

@@ -20,15 +20,20 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="莫非 - 技术博客">
-<meta property="og:url" content="http://example.com/archives/2020/07/index.html">
+  <meta name="description" content="docker容器中python进程难以调试怎么办？使用gdb。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用gdb调试docker容器中的python进程">
+<meta property="og:url" content="http://example.com/2021/02/01/%E4%BD%BF%E7%94%A8gdb%E8%B0%83%E8%AF%95docker%E5%AE%B9%E5%99%A8%E4%B8%AD%E7%9A%84python%E8%BF%9B%E7%A8%8B/index.html">
 <meta property="og:site_name" content="莫非 - 技术博客">
+<meta property="og:description" content="docker容器中python进程难以调试怎么办？使用gdb。">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-02-01T14:00:08.000Z">
+<meta property="article:modified_time" content="2021-02-01T14:05:43.913Z">
 <meta property="article:author" content="莫非">
+<meta property="article:tag" content="SQLAlchemy">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/archives/2020/07/">
+<link rel="canonical" href="http://example.com/2021/02/01/%E4%BD%BF%E7%94%A8gdb%E8%B0%83%E8%AF%95docker%E5%AE%B9%E5%99%A8%E4%B8%AD%E7%9A%84python%E8%BF%9B%E7%A8%8B/">
 
 
 <script id="page-configurations">
@@ -36,12 +41,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>归档 | 莫非 - 技术博客</title>
+  <title>使用gdb调试docker容器中的python进程 | 莫非 - 技术博客</title>
   
 
 
@@ -149,51 +154,104 @@
         <div class="content-wrap">
           
 
-          <div class="content archive">
+          <div class="content post posts-expand">
             
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        
-        <span class="collection-header">还行! 目前共计 47 篇日志。 继续努力。</span>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/02/01/%E4%BD%BF%E7%94%A8gdb%E8%B0%83%E8%AF%95docker%E5%AE%B9%E5%99%A8%E4%B8%AD%E7%9A%84python%E8%BF%9B%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="莫非">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="莫非 - 技术博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          使用gdb调试docker容器中的python进程
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-02-01 22:00:08 / 修改时间：22:05:43" itemprop="dateCreated datePublished" datetime="2021-02-01T22:00:08+08:00">2021-02-01</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">docker容器中python进程难以调试怎么办？使用gdb。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2020</span>
+        <h3><span id="根据进程特征找到宿主机中对应的进程">根据进程特征找到宿主机中对应的进程</span></h3><p>docker容器</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ps -ef | grep 7687 </span></span><br><span class="line">okp       7687   784  1 20:57 ?        00:00:00 /home/okp/.pyenv/versions/3.6.5/envs/okp-ins-demo/bin/python3.6 /home/okp/.pyenv/versions/okp-ins-demo/bin/celery -A celery_worker.celery worker -c 3 -Q celery,low --loglevel=info</span><br></pre></td></tr></table></figure>
+
+<p>宿主机</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ps -ef | grep &#x27;20:57 ?        00:00:00 /home/okp/.pyenv/versions/3.6.5/envs/okp-ins-demo/bin/python3.6 /home/okp/.pyenv/versions/okp-ins-demo/bin/celery -A celery_worker.celery worker -c 3 -Q celery,low --loglevel=inf[o]&#x27; </span></span><br><span class="line">hzmc     31771  9480  0 20:57 ?        00:00:00 /home/okp/.pyenv/versions/3.6.5/envs/okp-ins-demo/bin/python3.6 /home/okp/.pyenv/versions/okp-ins-demo/bin/celery -A celery_worker.celery worker -c 3 -Q celery,low --loglevel=info </span><br></pre></td></tr></table></figure>
+
+<h3><span id="在宿主机安装gdb">在宿主机安装gdb</span></h3><p>yum install gdb</p>
+<h3><span id="查询容器的upperdir">查询容器的UpperDir</span></h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker inspect &lt;osm-tool-container&gt; | grep diff</span><br></pre></td></tr></table></figure>
+
+<p>例如：/var/lib/docker/overlay2/e12dcd0006e71a104a4d38bb8bedbcd7752fb8d0eae78280ff0fee655f6e6bdc/diff</p>
+<h3><span id="拼接pythonpath">拼接pythonpath</span></h3><p>pythonpath = <upperdir> - diff + &lt;容器内pythonpath&gt; （容器内pythonpath可以在第一步的进程信息中获得）</upperdir></p>
+<p>例如：/var/lib/docker/overlay2/e12dcd0006e71a104a4d38bb8bedbcd7752fb8d0eae78280ff0fee655f6e6bdc/merged/home/okp/.pyenv/versions/3.6.5/envs/okp-ins-demo/bin/python3.6</p>
+<h3><span id="使用gdb">使用gdb</span></h3><p>输入gdb命令进入交互式命令行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">set auto-load safe-path &#x2F;</span><br><span class="line">file &#x2F;var&#x2F;lib&#x2F;docker&#x2F;overlay2&#x2F;e12dcd0006e71a104a4d38bb8bedbcd7752fb8d0eae78280ff0fee655f6e6bdc&#x2F;merged&#x2F;home&#x2F;okp&#x2F;.pyenv&#x2F;versions&#x2F;3.6.5&#x2F;envs&#x2F;okp-ins-demo&#x2F;bin&#x2F;python3.6</span><br><span class="line">attach 31771</span><br><span class="line">py-bt </span><br></pre></td></tr></table></figure>
+
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+    
+    
+    
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-07-04T17:12:03+08:00"
-              content="2020-07-04">
-          07-04
-        </time>
-      </div>
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/SQLAlchemy/" rel="tag"># SQLAlchemy</a>
+          </div>
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/07/04/%E5%9C%A8flask-restplus%E4%B8%8B%E7%BB%9F%E4%B8%80%E6%8E%A5%E5%8F%A3%E8%BF%94%E5%9B%9E%E6%A0%BC%E5%BC%8F/" itemprop="url">
-            <span itemprop="name">在flask-restplus下统一接口返回格式</span>
-          </a>
-      </div>
+        
 
-    </header>
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/01/31/sqlalchemy%E4%B8%AD%E5%8F%96%E6%B6%88%E5%B7%B2%E5%AD%98%E5%9C%A8%E7%9A%84%E6%8E%92%E5%BA%8F%E8%A7%84%E5%88%99/" rel="prev" title="sqlalchemy中取消已存在的排序规则">
+      <i class="fa fa-chevron-left"></i> sqlalchemy中取消已存在的排序规则
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
   </article>
-
-
-    </div>
-  </div>
   
   
-  
-
   
 
 
@@ -246,6 +304,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">根据进程特征找到宿主机中对应的进程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text">在宿主机安装gdb</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">3.</span> <span class="nav-text">查询容器的UpperDir</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">4.</span> <span class="nav-text">拼接pythonpath</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">5.</span> <span class="nav-text">使用gdb</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

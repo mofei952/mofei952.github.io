@@ -20,15 +20,22 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="莫非 - 技术博客">
-<meta property="og:url" content="http://example.com/tags/Dijkstra%E7%AE%97%E6%B3%95/index.html">
+  <meta name="description" content="本章主要学习了什么是镜像，怎么创建、修改、存储和共享镜像。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《第一本Docker书》读书笔记 第4章 使用Docker镜像和仓库">
+<meta property="og:url" content="http://example.com/2021/03/28/%E3%80%8A%E7%AC%AC%E4%B8%80%E6%9C%ACDocker%E4%B9%A6%E3%80%8B%E7%AC%AC%E4%BA%8C%E7%AB%A0/index.html">
 <meta property="og:site_name" content="莫非 - 技术博客">
+<meta property="og:description" content="本章主要学习了什么是镜像，怎么创建、修改、存储和共享镜像。">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-03-28T14:10:22.000Z">
+<meta property="article:modified_time" content="2021-03-28T14:42:43.607Z">
 <meta property="article:author" content="莫非">
+<meta property="article:tag" content="docker">
+<meta property="article:tag" content="读书笔记">
+<meta property="article:tag" content="《第一本Docker书》">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/tags/Dijkstra%E7%AE%97%E6%B3%95/">
+<link rel="canonical" href="http://example.com/2021/03/28/%E3%80%8A%E7%AC%AC%E4%B8%80%E6%9C%ACDocker%E4%B9%A6%E3%80%8B%E7%AC%AC%E4%BA%8C%E7%AB%A0/">
 
 
 <script id="page-configurations">
@@ -36,12 +43,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>标签: Dijkstra算法 | 莫非 - 技术博客</title>
+  <title>《第一本Docker书》读书笔记 第4章 使用Docker镜像和仓库 | 莫非 - 技术博客</title>
   
 
 
@@ -149,51 +156,106 @@
         <div class="content-wrap">
           
 
-          <div class="content tag">
+          <div class="content post posts-expand">
             
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <h2 class="collection-header">Dijkstra算法
-          <small>标签</small>
-        </h2>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/03/28/%E3%80%8A%E7%AC%AC%E4%B8%80%E6%9C%ACDocker%E4%B9%A6%E3%80%8B%E7%AC%AC%E4%BA%8C%E7%AB%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="莫非">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="莫非 - 技术博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          《第一本Docker书》读书笔记 第4章 使用Docker镜像和仓库
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-28 22:10:22 / 修改时间：22:42:43" itemprop="dateCreated datePublished" datetime="2021-03-28T22:10:22+08:00">2021-03-28</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/docker/" itemprop="url" rel="index"><span itemprop="name">docker</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">本章主要学习了什么是镜像，怎么创建、修改、存储和共享镜像。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2020</span>
+        <h3><span id="什么是docker镜像">什么是Docker镜像</span></h3><p>Docker镜像是由文件系统叠加而成。</p>
+<h3><span id="列出镜像">列出镜像</span></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker images</span><br><span class="line">docker images ubuntu</span><br></pre></td></tr></table></figure>
+
+<h3><span id="拉取镜像">拉取镜像</span></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull fedora:20</span><br></pre></td></tr></table></figure>
+
+<p>如果本地说主机上还没有ubuntu:lastest镜像，docker run会先拉取镜像</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --name xx ubuntu &#x2F;bin&#x2F;bash</span><br></pre></td></tr></table></figure>
+
+<h3><span id="查找镜像">查找镜像</span></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker search puppet</span><br></pre></td></tr></table></figure>
+
+<h3><span id="构建镜像">构建镜像</span></h3><p>构建Docker镜像有两种方法：</p>
+<ul>
+<li>使用docker commit命令</li>
+<li>使用docker build名利给和Dockerfile文件</li>
+</ul>
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+    
+    
+    
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-10-12T18:52:17+08:00"
-              content="2020-10-12">
-          10-12
-        </time>
-      </div>
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/docker/" rel="tag"># docker</a>
+              <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag"># 读书笔记</a>
+              <a href="/tags/%E3%80%8A%E7%AC%AC%E4%B8%80%E6%9C%ACDocker%E4%B9%A6%E3%80%8B/" rel="tag"># 《第一本Docker书》</a>
+          </div>
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/10/12/%E3%80%8A%E7%AE%97%E6%B3%95%E5%9B%BE%E8%A7%A3%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%20%E7%AC%AC%E4%B8%83%E7%AB%A0%20%E7%8B%84%E5%85%8B%E6%96%AF%E7%89%B9%E6%8B%89%E7%AE%97%E6%B3%95/" itemprop="url">
-            <span itemprop="name">《算法图解》读书笔记 第七章 狄克斯特拉算法</span>
-          </a>
-      </div>
+        
 
-    </header>
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/27/%E3%80%8AMySQL%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A%E3%80%8B%E7%AC%AC%E4%BA%8C%E5%8D%81%E4%B8%80%E7%AB%A0%20%E5%88%9B%E5%BB%BA%E5%92%8C%E6%93%8D%E7%BA%B5%E8%A1%A8/" rel="prev" title="《MySQL必知必会》读书笔记 第二十一章 创建和操纵表">
+      <i class="fa fa-chevron-left"></i> 《MySQL必知必会》读书笔记 第二十一章 创建和操纵表
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
   </article>
-
-    </div>
-  </div>
   
   
-  
-
   
 
 
@@ -246,6 +308,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">什么是Docker镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text">列出镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">3.</span> <span class="nav-text">拉取镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">4.</span> <span class="nav-text">查找镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">5.</span> <span class="nav-text">构建镜像</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

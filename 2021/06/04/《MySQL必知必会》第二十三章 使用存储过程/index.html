@@ -28,7 +28,7 @@
 <meta property="og:description" content="本章介绍什么是存储过程，为什么要使用存储过程以及如何使用存储过程，并且介绍创建和使用存储过程的基本语法。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-06-04T13:55:57.000Z">
-<meta property="article:modified_time" content="2021-06-05T03:07:54.923Z">
+<meta property="article:modified_time" content="2021-06-05T10:55:42.506Z">
 <meta property="article:author" content="莫非">
 <meta property="article:tag" content="MySQL">
 <meta name="twitter:card" content="summary">
@@ -191,7 +191,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-05 11:07:54" itemprop="dateModified" datetime="2021-06-05T11:07:54+08:00">2021-06-05</time>
+                <time title="修改时间：2021-06-05 18:55:42" itemprop="dateModified" datetime="2021-06-05T18:55:42+08:00">2021-06-05</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -260,7 +260,7 @@
 <p>显示3个值：</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> @pricehigh, @pricelow, @priceaverage;</span><br></pre></td></tr></table></figure>
 
-<p>定义存储过程ordertotal，它接口订单号并返回该订单的合计：</p>
+<p>定义存储过程ordertotal，它接收订单号并返回该订单的合计：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">CREATE PROCEDURE ordertotal(</span><br><span class="line">	IN onnumber INT,</span><br><span class="line">	OUT ototal DECIMAL(8,2)</span><br><span class="line">)</span><br><span class="line">BEGIN</span><br><span class="line">	SELECT Sum(item_price*quantity)</span><br><span class="line">	FROM orderitems</span><br><span class="line">	WHERE order_num &#x3D; onumber</span><br><span class="line">	INTO ototal;</span><br><span class="line">END;</span><br></pre></td></tr></table></figure>
 
 <p>调用ordertotal</p>
@@ -269,7 +269,25 @@
 <p>显示此合计</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> @total;</span><br></pre></td></tr></table></figure>
 
-<h4><span id="建立智能存储过程">建立智能存储过程</span></h4>
+<h4><span id="建立智能存储过程">建立智能存储过程</span></h4><p>只有在存储过程内包含业务规则和智能处理时，它们的威力才真正显现出来。</p>
+<p>创建存储过程ordertotal，它同样是计算订单的合并，但还需要考虑增值税的情况：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">-- Name: ordertotal</span><br><span class="line">-- Parameters: onumber &#x3D; order number</span><br><span class="line">--             texable &#x3D; 0 if not taxable, 1 if taxable</span><br><span class="line">--             ototal &#x3D; order total variable</span><br><span class="line">CREATE PROCEDURE ordertotal(</span><br><span class="line">	IN onumber INT,</span><br><span class="line">	IN taxable BOOLEAN,</span><br><span class="line">	OUT ototal DECIMAL(8,2)</span><br><span class="line">) COMMECT &#39;Obtain order total, optionally adding tax&#39;</span><br><span class="line">BEGIN</span><br><span class="line">	</span><br><span class="line">	-- Declare variable for total</span><br><span class="line">	DECLARE total DECIMAL(8,2)l</span><br><span class="line">	-- Declare tax percentage</span><br><span class="line">	DECLARE taxrate INT DEFAULT 6;</span><br><span class="line">	</span><br><span class="line">	-- Get the order total</span><br><span class="line">	SELECT Sum(item_price*quantity)</span><br><span class="line">	FROM orderitems</span><br><span class="line">	WHERE order_num &#x3D; onumber</span><br><span class="line">	INTO total;</span><br><span class="line">	</span><br><span class="line">	-- IS this taxable?</span><br><span class="line">	IF taxable THEN</span><br><span class="line">		-- Yes, so add taxrate to the total</span><br><span class="line">		SELECT total+(total&#x2F;100*taxrate) INTO total;</span><br><span class="line">	END IF;</span><br><span class="line">	</span><br><span class="line">	-- And finally, save to out variable</span><br><span class="line">	SELECT total INTO otatal;</span><br><span class="line"></span><br><span class="line">END;</span><br></pre></td></tr></table></figure>
+
+<p>执行存储过程，不加增值税：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CALL</span> ordertotal(<span class="number">20005</span>, <span class="number">0</span>, @total);</span><br><span class="line"><span class="keyword">SELECT</span> @total;</span><br></pre></td></tr></table></figure>
+
+<p>执行存储过程，加增值税：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CALL</span> ordertotal(<span class="number">20005</span>, <span class="number">1</span>, @total);</span><br><span class="line"><span class="keyword">SELECT</span> @total;</span><br></pre></td></tr></table></figure>
+
+<h4><span id="检查存储过程">检查存储过程</span></h4><p>显示创建存储过程的语句：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SHOW</span> <span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> ordertotal;</span><br></pre></td></tr></table></figure>
+
+<p>获得包含何时、由谁创建等详细信息的存储过程列表：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SHOW</span> <span class="keyword">PROCEDURE</span> <span class="keyword">STATUS</span></span><br></pre></td></tr></table></figure>
+
+
+
+
     </div>
 
     
@@ -349,7 +367,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">存储过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text">为什么要使用存储过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">3.</span> <span class="nav-text">使用存储过程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-number">3.1.</span> <span class="nav-text">执行存储过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-number">3.2.</span> <span class="nav-text">创建存储过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-number">3.3.</span> <span class="nav-text">删除存储过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-number">3.4.</span> <span class="nav-text">使用参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-number">3.5.</span> <span class="nav-text">建立智能存储过程</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">存储过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text">为什么要使用存储过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">3.</span> <span class="nav-text">使用存储过程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-number">3.1.</span> <span class="nav-text">执行存储过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-number">3.2.</span> <span class="nav-text">创建存储过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-number">3.3.</span> <span class="nav-text">删除存储过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-number">3.4.</span> <span class="nav-text">使用参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-number">3.5.</span> <span class="nav-text">建立智能存储过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-number">3.6.</span> <span class="nav-text">检查存储过程</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

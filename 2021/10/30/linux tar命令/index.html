@@ -20,21 +20,20 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="原题">
+  <meta name="description" content="Linux tar命令用于建立，还原备份文件。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="leetcode 96 Unique Binary Search Trees">
-<meta property="og:url" content="http://example.com/2021/10/01/linux%20tar%E5%91%BD%E4%BB%A4/index.html">
+<meta property="og:title" content="Linux tar命令">
+<meta property="og:url" content="http://example.com/2021/10/30/linux%20tar%E5%91%BD%E4%BB%A4/index.html">
 <meta property="og:site_name" content="莫非 - 技术博客">
-<meta property="og:description" content="原题">
+<meta property="og:description" content="Linux tar命令用于建立，还原备份文件。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-10-01T10:49:35.000Z">
-<meta property="article:modified_time" content="2021-10-30T11:40:00.311Z">
+<meta property="article:published_time" content="2021-10-30T12:33:06.000Z">
+<meta property="article:modified_time" content="2021-10-30T13:09:51.681Z">
 <meta property="article:author" content="莫非">
-<meta property="article:tag" content="leetcode">
-<meta property="article:tag" content="动态规划">
+<meta property="article:tag" content="Linux">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/2021/10/01/linux%20tar%E5%91%BD%E4%BB%A4/">
+<link rel="canonical" href="http://example.com/2021/10/30/linux%20tar%E5%91%BD%E4%BB%A4/">
 
 
 <script id="page-configurations">
@@ -47,7 +46,7 @@
   };
 </script>
 
-  <title>leetcode 96 Unique Binary Search Trees | 莫非 - 技术博客</title>
+  <title>Linux tar命令 | 莫非 - 技术博客</title>
   
 
 
@@ -162,7 +161,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/01/linux%20tar%E5%91%BD%E4%BB%A4/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/30/linux%20tar%E5%91%BD%E4%BB%A4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -175,7 +174,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          leetcode 96 Unique Binary Search Trees
+          Linux tar命令
         </h1>
 
         <div class="post-meta">
@@ -184,27 +183,22 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2021-10-01 18:49:35" itemprop="dateCreated datePublished" datetime="2021-10-01T18:49:35+08:00">2021-10-01</time>
+              <time title="创建时间：2021-10-30 20:33:06 / 修改时间：21:09:51" itemprop="dateCreated datePublished" datetime="2021-10-30T20:33:06+08:00">2021-10-30</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-10-30 19:40:00" itemprop="dateModified" datetime="2021-10-30T19:40:00+08:00">2021-10-30</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a>
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
                 </span>
             </span>
 
           
+            <div class="post-description">Linux tar命令用于建立，还原备份文件。</div>
 
         </div>
       </header>
@@ -215,7 +209,41 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>原题</p>
+        <p>Linux tar（英文全拼：tape archive ）命令用于建立，还原备份文件。</p>
+<h3 id="常用参数"><a href="#常用参数" class="headerlink" title="常用参数"></a>常用参数</h3><p><strong>五个独立的参数，压缩解压都要用到其中一个</strong></p>
+<p>-c 建立新的备份文件</p>
+<p>-x 从备份文件中还原文件</p>
+<p>-t 列出备份文件的内容</p>
+<p>-r：向压缩归档文件末尾追加文件</p>
+<p>-u：更新原压缩包中的文件</p>
+<p><strong>可选参数</strong></p>
+<p>-z 通过gzip指令处理备份文件</p>
+<p>-v 显示指令执行过程</p>
+<p>-f 指定备份文件</p>
+<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><p>将所有.jpg的文件打成一个名为all.tar的包。-c是表示产生新的包，-f指定包的文件名。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -cvf all.tar *.jpg</span><br></pre></td></tr></table></figure>
+
+<p>将所有.gif的文件增加到all.tar的包里面去。-r是表示增加文件。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -rvf all.tar *.gif</span><br></pre></td></tr></table></figure>
+
+<p>更新原来tar包all.tar中logo.gif文件，-u表示更新文件。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -uvf all.tar logo.gif</span><br></pre></td></tr></table></figure>
+
+<p>列出all.tar包中所有文件，-t表示列出文件。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -tvf all.tar</span><br></pre></td></tr></table></figure>
+
+<p>解压all.tar包中所有文件，-x代表解压。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -xvf all.tar</span><br></pre></td></tr></table></figure>
+
+<p>将所有.jpg的文件打成一个名为test.tar.gz的包。-z表示用gzip指令来压缩。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -czvf test.tar.gz a.jpg</span><br></pre></td></tr></table></figure>
+
+<p>列出test.tar.gz包中所有文件，-t表示列出文件。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -tzvf test.tar.gz </span><br></pre></td></tr></table></figure>
+
+<p>解压all.tar包中所有文件，-x代表解压。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -xzvf test.tar.gz </span><br></pre></td></tr></table></figure>
+
 
     </div>
 
@@ -225,8 +253,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/leetcode/" rel="tag"># leetcode</a>
-              <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" rel="tag"># 动态规划</a>
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
           </div>
 
         
@@ -235,13 +262,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/09/12/%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91/" rel="prev" title="平衡二叉树">
-      <i class="fa fa-chevron-left"></i> 平衡二叉树
+    <a href="/2021/10/01/leetcode%2096%20Unique%20Binary%20Search%20Trees/" rel="prev" title="leetcode 96 Unique Binary Search Trees">
+      <i class="fa fa-chevron-left"></i> leetcode 96 Unique Binary Search Trees
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2021/10/01/leetcode%2096%20Unique%20Binary%20Search%20Trees/" rel="next" title="leetcode 96 Unique Binary Search Trees">
-      leetcode 96 Unique Binary Search Trees <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -300,6 +324,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0"><span class="nav-number">1.</span> <span class="nav-text">常用参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B"><span class="nav-number">2.</span> <span class="nav-text">实例</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

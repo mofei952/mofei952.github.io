@@ -28,7 +28,7 @@
 <meta property="og:description" content="主要介绍负载的定义、查看负载方式、负载飙高排查思路等。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-11-02T14:42:09.000Z">
-<meta property="article:modified_time" content="2021-11-03T14:24:01.291Z">
+<meta property="article:modified_time" content="2021-11-03T15:49:28.155Z">
 <meta property="article:author" content="莫非">
 <meta property="article:tag" content="Linux">
 <meta name="twitter:card" content="summary">
@@ -191,7 +191,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-11-03 22:24:01" itemprop="dateModified" datetime="2021-11-03T22:24:01+08:00">2021-11-03</time>
+                <time title="修改时间：2021-11-03 23:49:28" itemprop="dateModified" datetime="2021-11-03T23:49:28+08:00">2021-11-03</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -215,11 +215,23 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="什么是load"><a href="#什么是load" class="headerlink" title="什么是load"></a>什么是load</h3><p>cpu负载指的当前正在运行的进程数加上等待（排队）运行的进程数之和，在unix中被称为有运行队列长度。</p>
-<h3 id="查看负载方式"><a href="#查看负载方式" class="headerlink" title="查看负载方式"></a>查看负载方式</h3><h4 id="uptime"><a href="#uptime" class="headerlink" title="uptime"></a>uptime</h4><h4 id="w"><a href="#w" class="headerlink" title="w"></a>w</h4><h4 id="top"><a href="#top" class="headerlink" title="top"></a>top</h4><h3 id="机器正常负载范围"><a href="#机器正常负载范围" class="headerlink" title="机器正常负载范围"></a>机器正常负载范围</h3><h3 id="如何降低负载"><a href="#如何降低负载" class="headerlink" title="如何降低负载"></a>如何降低负载</h3><h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/kevin3101/article/details/52350683">linux–load解释_那些年匆匆-CSDN博客</a></p>
+        <h3 id="什么是Load-Average"><a href="#什么是Load-Average" class="headerlink" title="什么是Load Average"></a>什么是Load Average</h3><p>在UNIX系统中，系统负载Load是对当前CPU工作量的度量，表示当前正在运行的进程数加上等待（排队）运行的进程数之和，也被称为有运行队列长度。</p>
+<p>Load Average 表示一段时间 (1 分钟、5分钟、15分钟) 内的平均 Load 。</p>
+<h3 id="查看负载方式"><a href="#查看负载方式" class="headerlink" title="查看负载方式"></a>查看负载方式</h3><p>uptime、top、w命令都可以查看机器的负载信息。</p>
+<h4 id="uptime"><a href="#uptime" class="headerlink" title="uptime"></a>uptime</h4><p>uptime命令显示的信息依次为：当前时间、系统运行时长、当前登陆用户数量、系统在最近1分钟、5分钟和15分钟内的平均负载。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ uptime</span><br><span class="line"> 22:37:35 up 331 days, 11:15,  3 users,  load average: 0.79, 1.17, 1.33</span><br></pre></td></tr></table></figure>
+
+<h4 id="w"><a href="#w" class="headerlink" title="w"></a>w</h4><p>w命令的主要功能是显示目前登入系统的用户信息。显示信息依次为：当前时间，系统运行时长，当前登陆用户数量，系统在最近1分钟、5分钟和15分钟的平均负载。然后是每个用户的各项数据，项目显示顺序如下：登录帐号、终端名称、远程主机名、登录时间、空闲时间、JCPU、PCPU、当前正在运行进程的命令行。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ w</span><br><span class="line"> 22:45:27 up 331 days, 11:22,  3 users,  load average: 0.99, 0.83, 1.05</span><br><span class="line">USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT</span><br><span class="line">root     pts/2    192.168.98.160   19:31    3:09m  0.08s  0.08s -bash</span><br><span class="line">root     pts/3    192.168.98.160   19:36    2:20m  0.06s  0.06s -bash</span><br><span class="line">root     pts/5    10.1.0.4         22:45    7.00s  0.04s  0.00s w</span><br></pre></td></tr></table></figure>
+
+<h4 id="top"><a href="#top" class="headerlink" title="top"></a>top</h4><p>top是常用的性能分析工具，能够实时显示系统中各个进程的资源占用状况，类似于Windows的任务管理器。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">$ top</span><br><span class="line">top - 23:42:47 up 331 days, 12:20,  4 users,  load average: 0.30, 0.63, 0.74</span><br><span class="line">Tasks: 239 total,   1 running, 238 sleeping,   0 stopped,   0 zombie</span><br><span class="line">%Cpu(s):  2.3 us,  0.8 sy,  0.0 ni, 97.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st</span><br><span class="line">KiB Mem : 16328004 total, 10506952 free,  2409532 used,  3411520 buff/cache</span><br><span class="line">KiB Swap: 16777212 total, 15103752 free,  1673460 used. 13547832 avail Mem</span><br><span class="line"></span><br><span class="line">  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND</span><br><span class="line"> 1764 gdm       20   0  799280  85356    524 S  12.5  0.5   6710:51 gsd-color</span><br><span class="line"> 1111 root      20   0  231288   2292    772 S   6.2  0.0   1007:47 snmpd</span><br><span class="line"> 7283 root      20   0  162300   2440   1544 R   6.2  0.0   0:00.01 top</span><br><span class="line">    1 root      20   0  191864   3316   1608 S   0.0  0.0 164:43.22 systemd</span><br><span class="line">    2 root      20   0       0      0      0 S   0.0  0.0   3:15.58 kthreadd</span><br><span class="line">    4 root       0 -20       0      0      0 S   0.0  0.0   0:00.00 kworker/0:0H</span><br><span class="line">    6 root      20   0       0      0      0 S   0.0  0.0  42:54.28 ksoftirqd/0</span><br><span class="line">    7 root      rt   0       0      0      0 S   0.0  0.0   6:04.06 migration/0</span><br></pre></td></tr></table></figure>
+
+<h3 id="机器正常负载范围"><a href="#机器正常负载范围" class="headerlink" title="机器正常负载范围"></a>机器正常负载范围</h3><h3 id="如何降低负载"><a href="#如何降低负载" class="headerlink" title="如何降低负载"></a>如何降低负载</h3><h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/kevin3101/article/details/52350683">linux–load解释_那些年匆匆-CSDN博客</a></p>
 <p><a target="_blank" rel="noopener" href="http://www.elecfans.com/baike/computer/fuwuqi/20180603688904.html">什么是负载？如何查看服务器的机器负载情况？ - 电子发烧友网 (elecfans.com)</a></p>
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/mal327/article/details/7423750">如何查看服务器当前的负载信息_mal327的专栏-CSDN博客_查看服务器网络负载</a></p>
 <p><a target="_blank" rel="noopener" href="https://www.ruanyifeng.com/blog/2011/07/linux_load_average_explained.html">理解Linux系统负荷 - 阮一峰的网络日志 (ruanyifeng.com)</a></p>
+<p><a target="_blank" rel="noopener" href="https://scoutapm.com/blog/understanding-load-averages">Understanding Linux CPU Load - when should you be worried? | Scout APM Blog</a></p>
 
     </div>
 
@@ -300,7 +312,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFload"><span class="nav-number">1.</span> <span class="nav-text">什么是load</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E8%B4%9F%E8%BD%BD%E6%96%B9%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">查看负载方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#uptime"><span class="nav-number">2.1.</span> <span class="nav-text">uptime</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#w"><span class="nav-number">2.2.</span> <span class="nav-text">w</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#top"><span class="nav-number">2.3.</span> <span class="nav-text">top</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%BA%E5%99%A8%E6%AD%A3%E5%B8%B8%E8%B4%9F%E8%BD%BD%E8%8C%83%E5%9B%B4"><span class="nav-number">3.</span> <span class="nav-text">机器正常负载范围</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E9%99%8D%E4%BD%8E%E8%B4%9F%E8%BD%BD"><span class="nav-number">4.</span> <span class="nav-text">如何降低负载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFLoad-Average"><span class="nav-number">1.</span> <span class="nav-text">什么是Load Average</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E8%B4%9F%E8%BD%BD%E6%96%B9%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">查看负载方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#uptime"><span class="nav-number">2.1.</span> <span class="nav-text">uptime</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#w"><span class="nav-number">2.2.</span> <span class="nav-text">w</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#top"><span class="nav-number">2.3.</span> <span class="nav-text">top</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%BA%E5%99%A8%E6%AD%A3%E5%B8%B8%E8%B4%9F%E8%BD%BD%E8%8C%83%E5%9B%B4"><span class="nav-number">3.</span> <span class="nav-text">机器正常负载范围</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E9%99%8D%E4%BD%8E%E8%B4%9F%E8%BD%BD"><span class="nav-number">4.</span> <span class="nav-text">如何降低负载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

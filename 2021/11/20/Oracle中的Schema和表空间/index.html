@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="Schema为数据库对象的集合。">
+  <meta name="description" content="Schema是数据库对象的集合。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Oracle中的Schema和表空间">
 <meta property="og:url" content="http://example.com/2021/11/20/Oracle%E4%B8%AD%E7%9A%84Schema%E5%92%8C%E8%A1%A8%E7%A9%BA%E9%97%B4/index.html">
 <meta property="og:site_name" content="莫非 - 技术博客">
-<meta property="og:description" content="Schema为数据库对象的集合。">
+<meta property="og:description" content="Schema是数据库对象的集合。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-11-20T15:11:05.000Z">
-<meta property="article:modified_time" content="2021-11-20T15:32:09.197Z">
+<meta property="article:modified_time" content="2021-11-21T11:25:35.985Z">
 <meta property="article:author" content="莫非">
 <meta property="article:tag" content="docker">
 <meta name="twitter:card" content="summary">
@@ -183,10 +183,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-11-20 23:11:05 / 修改时间：23:32:09" itemprop="dateCreated datePublished" datetime="2021-11-20T23:11:05+08:00">2021-11-20</time>
+              <time title="创建时间：2021-11-20 23:11:05" itemprop="dateCreated datePublished" datetime="2021-11-20T23:11:05+08:00">2021-11-20</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-11-21 19:25:35" itemprop="dateModified" datetime="2021-11-21T19:25:35+08:00">2021-11-21</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -198,7 +204,7 @@
             </span>
 
           
-            <div class="post-description">Schema为数据库对象的集合。</div>
+            <div class="post-description">Schema是数据库对象的集合。</div>
 
         </div>
       </header>
@@ -209,10 +215,14 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="Schema"><a href="#Schema" class="headerlink" title="Schema"></a>Schema</h3><p>Schema为数据库对象的集合，Schema里面包含了各种对象如tables, views, sequences, stored procedures, synonyms, indexes, clusters, and database links。</p>
-<p>一个用户一般对应一个Schema,该用户的schema名等于用户名，并作为该用户缺省schema。</p>
-<p>在数据库中一个对象的完整名称为schema.object。比如用select * from scott.emp访问scott用户下的emp表，当前用户是scott的话可以省略schema，直接用select * from emp来访问。</p>
-<h3 id="表空间"><a href="#表空间" class="headerlink" title="表空间"></a>表空间</h3><h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/afsdfq/article/details/90417355">https://blog.csdn.net/afsdfq/article/details/90417355</a></p>
+        <h3 id="Schema"><a href="#Schema" class="headerlink" title="Schema"></a>Schema</h3><p>Schema是数据库对象的集合。Schema里面包含了各种对象如tables，views，sequences，stored procedures，synonyms，indexes，clusters，database links。</p>
+<h3 id="用户与Schema的关系"><a href="#用户与Schema的关系" class="headerlink" title="用户与Schema的关系"></a>用户与Schema的关系</h3><p>一个用户对应一个缺省Schema，该Schema名和用户名相同。</p>
+<p>操作对象时，如果不指定Schema，则会使用当前用户缺省的Schema。比如当前用户是scott的话，可以直接用select * from emp来访问scott.emp。</p>
+<h3 id="表空间"><a href="#表空间" class="headerlink" title="表空间"></a>表空间</h3><p>一个数据库有多个表空间，一个表空间包含多个数据文件。</p>
+<p>创建表空间时会在物理磁盘上建立一个数据文件，作为数据库对象（用户、表、存储过程等等）的物理存储空间。当数据文件空间不足时，可以进行手动或自动扩容。</p>
+<h3 id="用户与表空间的关系"><a href="#用户与表空间的关系" class="headerlink" title="用户与表空间的关系"></a>用户与表空间的关系</h3><p>创建用户可以为其指定表空间，如果没有显性指定默认表空间，则指定为users表空间。</p>
+<p>一个用户一般只使用一个表空间（默认表空间），但也可以在创建表时指定其他表空间。</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/afsdfq/article/details/90417355">https://blog.csdn.net/afsdfq/article/details/90417355</a></p>
 
     </div>
 
@@ -293,7 +303,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Schema"><span class="nav-number">1.</span> <span class="nav-text">Schema</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%A8%E7%A9%BA%E9%97%B4"><span class="nav-number">2.</span> <span class="nav-text">表空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Schema"><span class="nav-number">1.</span> <span class="nav-text">Schema</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E4%B8%8ESchema%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">2.</span> <span class="nav-text">用户与Schema的关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%A8%E7%A9%BA%E9%97%B4"><span class="nav-number">3.</span> <span class="nav-text">表空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E4%B8%8E%E8%A1%A8%E7%A9%BA%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">4.</span> <span class="nav-text">用户与表空间的关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
